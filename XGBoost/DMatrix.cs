@@ -1,12 +1,19 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace XGBoost
 {
   class DMatrix
   {
-    public DMatrix()
-    {
+    [DllImport("../../libs/libxgboost.dll")]
+    public static extern int XGDMatrixCreateFromFile([MarshalAs(UnmanagedType.LPStr)] string dataPath, int silent, out IntPtr dmatrixPtr);
 
+    private IntPtr dmatrixPtr;
+
+    public DMatrix(string dataPath, bool silent = false)
+    {
+      int output = XGDMatrixCreateFromFile(dataPath, silent ? 1 : 0, out dmatrixPtr);
+      if (output == -1) throw new DllFailException("XGDMatrixCreateFromFile() failed");
     }
 
     public string[] FeatureNames()

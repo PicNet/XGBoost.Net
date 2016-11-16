@@ -7,6 +7,7 @@ namespace XGBoost
     static void Main(string[] args)
     {
       Console.WriteLine("Program.Main()");
+      DMatrix d = new DMatrix("C:/Users/adamd/Documents/Visual Studio 2015/Projects/guidoXgboost/guidoXgboost/libs/test.txt");
       Console.ReadKey();
     }
   }
