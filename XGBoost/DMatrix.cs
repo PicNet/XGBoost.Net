@@ -8,6 +8,11 @@ namespace XGBoost
 {
   class DMatrix
   {
+    public DMatrix()
+    {
+
+    }
+
     public string[] FeatureNames()
     {
       return null;
