@@ -10,7 +10,7 @@ namespace XGBoost
     public DMatrix(string dataPath, bool silent = false)
     {
       int output = DllMethods.XGDMatrixCreateFromFile(dataPath, silent ? 1 : 0, out _handle);
-      if (output == -1) throw new DllFailException("XGDMatrixCreateFromFile() failed");
+      if (output == -1) throw new DllFailException("XGDMatrixCreateFromFile() in DMatrix() failed");
     }
 
     public string[] FeatureNames()
@@ -50,7 +50,11 @@ namespace XGBoost
 
     public int NumCol()
     {
-      return 0;
+      ulong colsULong;
+      int output = DllMethods.XGDMatrixNumCol(_handle, out colsULong);
+      if (output == -1) throw new DllFailException("XGDMatrixNumCol() in DMatrix.NumCol() failed");
+      int cols = unchecked((int) colsULong);
+      return cols;
     }
 
     public int NumRow()
