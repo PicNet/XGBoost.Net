@@ -3,7 +3,7 @@ using Microsoft.Win32.SafeHandles;
 
 namespace XGBoost
 {
-  class DMatrix : IDisposable
+  public class DMatrix : IDisposable
   {
     private DMatrixHandle _handle;
 
@@ -15,7 +15,7 @@ namespace XGBoost
 
     public string[] FeatureNames()
     {
-      return null;
+      return null; 
     }
 
     public string[] FeatureTypes()
