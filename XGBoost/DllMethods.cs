@@ -6,6 +6,9 @@ namespace XGBoost
   class DllMethods
   {
     [DllImport("../../libs/libxgboost.dll")]
-    public static extern int XGDMatrixCreateFromFile([MarshalAs(UnmanagedType.LPStr)] string dataPath, int silent, out IntPtr dmatrixPtr);
+    public static extern int XGDMatrixCreateFromFile([MarshalAs(UnmanagedType.LPStr)] string dataPath, int silent, out DMatrixHandle dmatrixPtr);
+
+    [DllImport("../../libs/libxgboost.dll")]
+    public static extern int XGDMatrixFree(IntPtr handle);
   }
 }

@@ -1,14 +1,15 @@
 ﻿using System;
+using Microsoft.Win32.SafeHandles;
 
 namespace XGBoost
 {
-  class DMatrix
+  class DMatrix : IDisposable
   {
-    private IntPtr dmatrixPtr;
+    private DMatrixHandle _handle;
 
     public DMatrix(string dataPath, bool silent = false)
     {
-      int output = DllMethods.XGDMatrixCreateFromFile(dataPath, silent ? 1 : 0, out dmatrixPtr);
+      int output = DllMethods.XGDMatrixCreateFromFile(dataPath, silent ? 1 : 0, out _handle);
       if (output == -1) throw new DllFailException("XGDMatrixCreateFromFile() failed");
     }
 
@@ -88,6 +89,28 @@ namespace XGBoost
     public DMatrix Slice()
     {
       return null;
+    }
+
+    public void Dispose()
+    {
+      if (_handle != null && !_handle.IsInvalid)
+      {
+        _handle.Dispose();
+      }
+    }
+  }
+
+  internal class DMatrixHandle : SafeHandleZeroOrMinusOneIsInvalid
+  {
+    private DMatrixHandle()
+        : base(true)
+    {
+    }
+
+    override protected bool ReleaseHandle()
+    {
+      int output = DllMethods.XGDMatrixFree(handle);
+      return output == 0 ? true : false;
     }
   }
 }
