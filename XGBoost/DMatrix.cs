@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
 namespace XGBoost
 {
   class DMatrix
   {
-    [DllImport("../../libs/libxgboost.dll")]
-    public static extern int XGDMatrixCreateFromFile([MarshalAs(UnmanagedType.LPStr)] string dataPath, int silent, out IntPtr dmatrixPtr);
-
     private IntPtr dmatrixPtr;
 
     public DMatrix(string dataPath, bool silent = false)
     {
-      int output = XGDMatrixCreateFromFile(dataPath, silent ? 1 : 0, out dmatrixPtr);
+      int output = DllMethods.XGDMatrixCreateFromFile(dataPath, silent ? 1 : 0, out dmatrixPtr);
       if (output == -1) throw new DllFailException("XGDMatrixCreateFromFile() failed");
     }
 
@@ -63,37 +59,30 @@ namespace XGBoost
 
     public void SaveBinary()
     {
-
     }
 
     public void SetBaseMargin()
     {
-
     }
 
     public void SetFloatInfo()
     {
-
     }
 
     public void SetGroup()
     {
-
     }
 
     public void SetLabel()
     {
-
     }
 
     public void SetUIntInfo()
     {
-
     }
 
     public void SetWeight()
     {
-
     }
 
     public DMatrix Slice()
