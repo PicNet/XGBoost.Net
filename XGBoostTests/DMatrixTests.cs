@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace XGBoostTests
 {
   [TestClass]
-  public class UnitTest1
+  public class DMatrixTests
   {
     [TestMethod]
     public void TestMethod1()
