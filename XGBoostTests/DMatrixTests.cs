@@ -47,6 +47,39 @@ namespace XGBoostTests
     }
 
     [TestMethod]
+    public void BaseMargin_Get()
+    {
+      DMatrix d = new DMatrix("libs/agaricus.txt.test");
+      // both should be empty
+      Assert.AreEqual(d.BaseMargin.Length, 0);
+      Assert.AreEqual(d.BaseMargin.Length, d.GetFloatInfo("base_margin").Length);
+    }
+
+    [TestMethod]
+    public void Label_Get()
+    {
+      DMatrix d = new DMatrix("libs/agaricus.txt.test");
+      float[] label = d.Label;
+      float[] actualLabel = d.GetFloatInfo("label");
+
+      Assert.AreEqual(label.Length, actualLabel.Length);
+      for (int i = 0; i < label.Length; i++)
+      {
+        string errorMsg = "Labels at index " + i.ToString() + " are not equal";
+        Assert.AreEqual(label[i], actualLabel[i], 0.01);
+      }
+    }
+
+    [TestMethod]
+    public void Weight_Get()
+    {
+      DMatrix d = new DMatrix("libs/agaricus.txt.test");
+      // both should be empty
+      Assert.AreEqual(d.Weight.Length, 0);
+      Assert.AreEqual(d.Weight.Length, d.GetFloatInfo("weight").Length);
+    }
+
+    [TestMethod]
     public void SetFloatInfo()
     {
       DMatrix d = new DMatrix("libs/agaricus.txt.test");
@@ -66,36 +99,36 @@ namespace XGBoostTests
     }
 
     [TestMethod]
-    public void BaseMargin()
+    public void BaseMargin_Set()
     {
       DMatrix d = new DMatrix("libs/agaricus.txt.test");
-      // both should be empty
-      Assert.AreEqual(d.BaseMargin.Length, 0);
-      Assert.AreEqual(d.BaseMargin.Length, d.GetFloatInfo("base_margin").Length);
+
+      float[] baseMargin = { 42 };
+      d.BaseMargin = baseMargin;
+      float[] dBaseMargin = d.BaseMargin;
+      Assert.AreEqual(baseMargin[0], dBaseMargin[0]);
     }
 
     [TestMethod]
-    public void Label()
+    public void Label_Set()
     {
       DMatrix d = new DMatrix("libs/agaricus.txt.test");
-      float[] label = d.Label;
-      float[] actualLabel = d.GetFloatInfo("label");
 
-      Assert.AreEqual(label.Length, actualLabel.Length);
-      for (int i = 0; i < label.Length; i++)
-      {
-        string errorMsg = "Labels at index " + i.ToString() + " are not equal";
-        Assert.AreEqual(label[i], actualLabel[i], 0.01);
-      }
+      float[] label = { 42 };
+      d.Label = label;
+      float[] dLabel = d.Label;
+      Assert.AreEqual(label[0], dLabel[0]);
     }
 
     [TestMethod]
-    public void Weight()
+    public void Weight_Set()
     {
       DMatrix d = new DMatrix("libs/agaricus.txt.test");
-      // both should be empty
-      Assert.AreEqual(d.Weight.Length, 0);
-      Assert.AreEqual(d.Weight.Length, d.GetFloatInfo("weight").Length);
+
+      float[] weight = { 42 };
+      d.Weight = weight;
+      float[] dWeight = d.Weight;
+      Assert.AreEqual(weight[0], dWeight[0]);
     }
   }
 }

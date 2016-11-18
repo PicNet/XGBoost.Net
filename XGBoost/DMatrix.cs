@@ -11,16 +11,19 @@ namespace XGBoost
     public float[] BaseMargin
     {
       get { return GetFloatInfo("base_margin"); }
+      set { SetFloatInfo("base_margin", value); }
     }
 
     public float[] Label
     {
       get { return GetFloatInfo("label"); }
+      set { SetFloatInfo("label", value); }
     }
 
     public float[] Weight
     {
       get { return GetFloatInfo("weight"); }
+      set { SetFloatInfo("weight", value); }
     }
 
     public DMatrix(string dataPath, bool silent = false)
@@ -100,14 +103,6 @@ namespace XGBoost
     }
 
     public void SetGroup()
-    {
-    }
-
-    public void SetLabel()
-    {
-    }
-
-    public void SetWeight()
     {
     }
 
