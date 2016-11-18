@@ -59,7 +59,11 @@ namespace XGBoost
 
     public int NumRow()
     {
-      return 0;
+      ulong rowsULong;
+      int output = DllMethods.XGDMatrixNumRow(_handle, out rowsULong);
+      if (output == -1) throw new DllFailException("XGDMatrixNumRow() in DMatrix.NumRow() failed");
+      int rows = unchecked((int)rowsULong);
+      return rows;
     }
 
     public void SaveBinary()
