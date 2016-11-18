@@ -45,5 +45,38 @@ namespace XGBoostTests
       // both should be empty
       Assert.AreEqual(baseMariginInfo.Length, actualBaseMarginInfo.Length); 
     }
+
+    [TestMethod]
+    public void BaseMargin()
+    {
+      DMatrix d = new DMatrix("libs/agaricus.txt.test");
+      // both should be empty
+      Assert.AreEqual(d.BaseMargin.Length, 0);
+      Assert.AreEqual(d.BaseMargin.Length, d.GetFloatInfo("base_margin").Length);
+    }
+
+    [TestMethod]
+    public void Label()
+    {
+      DMatrix d = new DMatrix("libs/agaricus.txt.test");
+      float[] label = d.Label;
+      float[] actualLabel = d.GetFloatInfo("label");
+
+      Assert.AreEqual(label.Length, actualLabel.Length);
+      for (int i = 0; i < label.Length; i++)
+      {
+        string errorMsg = "Labels at index " + i.ToString() + " are not equal";
+        Assert.AreEqual(label[i], actualLabel[i], 0.01);
+      }
+    }
+
+    [TestMethod]
+    public void Weight()
+    {
+      DMatrix d = new DMatrix("libs/agaricus.txt.test");
+      // both should be empty
+      Assert.AreEqual(d.Weight.Length, 0);
+      Assert.AreEqual(d.Weight.Length, d.GetFloatInfo("weight").Length);
+    }
   }
 }

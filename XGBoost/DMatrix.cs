@@ -8,6 +8,21 @@ namespace XGBoost
   {
     private DMatrixHandle _handle;
 
+    public float[] BaseMargin
+    {
+      get { return GetFloatInfo("base_margin"); }
+    }
+
+    public float[] Label
+    {
+      get { return GetFloatInfo("label"); }
+    }
+
+    public float[] Weight
+    {
+      get { return GetFloatInfo("weight"); }
+    }
+
     public DMatrix(string dataPath, bool silent = false)
     {
       int output = DllMethods.XGDMatrixCreateFromFile(dataPath, silent ? 1 : 0, out _handle);
@@ -22,11 +37,6 @@ namespace XGBoost
     public string[] FeatureTypes()
     {
       return null;
-    }
-
-    public float GetBaseMargin()
-    {
-      return 0;
     }
 
     public float[] GetFloatInfo(string field)
@@ -49,21 +59,6 @@ namespace XGBoost
         floats[i] = f;
       }
       return floats;
-    }
-
-    public string[] GetLabel()
-    {
-      return null;
-    }
-
-    public float[][] GetUIntInfo()
-    {
-      return null;
-    }
-
-    public float[] GetWeight()
-    {
-      return null;
     }
 
     public int NumCol()
