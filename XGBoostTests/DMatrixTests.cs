@@ -26,13 +26,24 @@ namespace XGBoostTests
     public void GetFloatInfo()
     {
       DMatrix d = new DMatrix("libs/agaricus.txt.test");
+      
       float[] labelInfo = d.GetFloatInfo("label");
-      float[] first5ActualLabels = { 0, 1, 0, 0, 0 };
-      for (int i = 0; i < first5ActualLabels.Length; i++)
+      float[] first5ActualLabelInfo = { 0, 1, 0, 0, 0 };
+      for (int i = 0; i < first5ActualLabelInfo.Length; i++)
       {
-        string errorMsg = "Labels number " + i.ToString() + " are not equal";
-        Assert.AreEqual(labelInfo[i], first5ActualLabels[i], 0.01, errorMsg);
+        string errorMsg = "Labels at index " + i.ToString() + " are not equal";
+        Assert.AreEqual(labelInfo[i], first5ActualLabelInfo[i], 0.01, errorMsg);
       }
+
+      float[] weightInfo = d.GetFloatInfo("weight");
+      float[] actualWeightInfo = { };
+      // both should be empty
+      Assert.AreEqual(weightInfo.Length, actualWeightInfo.Length); 
+
+      float[] baseMariginInfo = d.GetFloatInfo("base_margin");
+      float[] actualBaseMarginInfo = { };
+      // both should be empty
+      Assert.AreEqual(baseMariginInfo.Length, actualBaseMarginInfo.Length); 
     }
   }
 }
