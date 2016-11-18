@@ -7,6 +7,20 @@ namespace XGBoost
   public class DMatrix : IDisposable
   {
     private DMatrixHandle _handle;
+    private string[] featureNames;
+    private string[] featureTypes;
+
+    public string[] FeatureNames
+    {
+      get { return featureNames; }
+      set { featureNames = value; }
+    }
+
+    public string[] FeatureTypes
+    {
+      get { return featureTypes; }
+      set { featureTypes = value; }
+    }
 
     public float[] BaseMargin
     {
@@ -31,16 +45,6 @@ namespace XGBoost
       int output = DllMethods.XGDMatrixCreateFromFile(dataPath, silent ? 1 : 0, out _handle);
       if (output == -1) 
         throw new DllFailException("XGDMatrixCreateFromFile() in DMatrix() failed");
-    }
-
-    public string[] FeatureNames()
-    {
-      return null; 
-    }
-
-    public string[] FeatureTypes()
-    {
-      return null;
     }
 
     public float[] GetFloatInfo(string field)
@@ -86,12 +90,11 @@ namespace XGBoost
       return rows;
     }
 
-    public void SaveBinary()
+    public void SaveBinary(string fname, bool silent = true)
     {
-    }
-
-    public void SetBaseMargin()
-    {
+      int output = DllMethods.XGDMatrixSaveBinary(_handle, fname, silent ? 1 : 0);
+      if (output == -1)
+        throw new DllFailException("XGDMatrixSaveBinary() in DMatrix.SaveBinary() failed");
     }
 
     public void SetFloatInfo(string field, float[] floatInfo)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using XGBoost;
+using System.IO;
 
 namespace XGBoostTests
 {
@@ -129,6 +130,16 @@ namespace XGBoostTests
       d.Weight = weight;
       float[] dWeight = d.Weight;
       Assert.AreEqual(weight[0], dWeight[0]);
+    }
+
+    [TestMethod]
+    public void SaveBinary()
+    {
+      DMatrix orgDMatrix = new DMatrix("libs/agaricus.txt.test");
+      orgDMatrix.SaveBinary("libs/agaricus.txt.test.bin");
+      DMatrix binDMatrix = new DMatrix("libs/agaricus.txt.test.bin");
+      Assert.AreEqual(orgDMatrix.NumCol(), binDMatrix.NumCol());
+      File.Delete("libs/agaricus.txt.test.bin");
     }
   }
 }
