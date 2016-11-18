@@ -14,7 +14,8 @@ namespace Demo
       int cols = d.NumCol();
       int rows = d.NumRow();
 
-      float[] floatInfo = d.GetFloatInfo("label");
+      // get the labels for the DMatrix
+      float[] label = d.Label;
 
       Console.ReadKey();
     }

@@ -26,7 +26,8 @@ namespace XGBoost
     public DMatrix(string dataPath, bool silent = false)
     {
       int output = DllMethods.XGDMatrixCreateFromFile(dataPath, silent ? 1 : 0, out _handle);
-      if (output == -1) throw new DllFailException("XGDMatrixCreateFromFile() in DMatrix() failed");
+      if (output == -1) 
+        throw new DllFailException("XGDMatrixCreateFromFile() in DMatrix() failed");
     }
 
     public string[] FeatureNames()
@@ -44,10 +45,11 @@ namespace XGBoost
       ulong lenULong;
       IntPtr result;
       int output = DllMethods.XGDMatrixGetFloatInfo(_handle, field, out lenULong, out result);
-      if (output == -1) throw new DllFailException("XGDMatrixGetFloatInfo() in DMatrix.GetFloatInfo() failed");
+      if (output == -1) 
+        throw new DllFailException("XGDMatrixGetFloatInfo() in DMatrix.GetFloatInfo() failed");
 
       int len = unchecked((int)lenULong);
-      float[] floats = new float[len];
+      float[] floatInfo = new float[len];
       for (int i = 0; i < len; i++)
       {
         byte[] floatBytes = new byte[4];
@@ -56,16 +58,17 @@ namespace XGBoost
         floatBytes[2] = Marshal.ReadByte(result, 4*i + 2);
         floatBytes[3] = Marshal.ReadByte(result, 4*i + 3);
         float f = System.BitConverter.ToSingle(floatBytes, 0);
-        floats[i] = f;
+        floatInfo[i] = f;
       }
-      return floats;
+      return floatInfo;
     }
 
     public int NumCol()
     {
       ulong colsULong;
       int output = DllMethods.XGDMatrixNumCol(_handle, out colsULong);
-      if (output == -1) throw new DllFailException("XGDMatrixNumCol() in DMatrix.NumCol() failed");
+      if (output == -1) 
+        throw new DllFailException("XGDMatrixNumCol() in DMatrix.NumCol() failed");
       int cols = unchecked((int) colsULong);
       return cols;
     }
@@ -74,7 +77,8 @@ namespace XGBoost
     {
       ulong rowsULong;
       int output = DllMethods.XGDMatrixNumRow(_handle, out rowsULong);
-      if (output == -1) throw new DllFailException("XGDMatrixNumRow() in DMatrix.NumRow() failed");
+      if (output == -1) 
+        throw new DllFailException("XGDMatrixNumRow() in DMatrix.NumRow() failed");
       int rows = unchecked((int)rowsULong);
       return rows;
     }
@@ -87,8 +91,12 @@ namespace XGBoost
     {
     }
 
-    public void SetFloatInfo()
+    public void SetFloatInfo(string field, float[] floatInfo)
     {
+      ulong len = (ulong)floatInfo.Length;
+      int output = DllMethods.XGDMatrixSetFloatInfo(_handle, field, floatInfo, len);
+      if (output == -1)
+        throw new DllFailException("XGDMatrixSetFloatInfo() in DMatrix.SetFloatInfo() failed");
     }
 
     public void SetGroup()
@@ -96,10 +104,6 @@ namespace XGBoost
     }
 
     public void SetLabel()
-    {
-    }
-
-    public void SetUIntInfo()
     {
     }
 

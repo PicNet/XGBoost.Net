@@ -47,6 +47,25 @@ namespace XGBoostTests
     }
 
     [TestMethod]
+    public void SetFloatInfo()
+    {
+      DMatrix d = new DMatrix("libs/agaricus.txt.test");
+
+      float[] floatInfo = { 42 };
+      d.SetFloatInfo("label", floatInfo);
+      float[] dFloatInfo = d.GetFloatInfo("label");
+      Assert.AreEqual(floatInfo[0], dFloatInfo[0]);
+
+      d.SetFloatInfo("weight", floatInfo);
+      dFloatInfo = d.GetFloatInfo("weight");
+      Assert.AreEqual(floatInfo[0], dFloatInfo[0]);
+
+      d.SetFloatInfo("base_margin", floatInfo);
+      dFloatInfo = d.GetFloatInfo("base_margin");
+      Assert.AreEqual(floatInfo[0], dFloatInfo[0]);
+    }
+
+    [TestMethod]
     public void BaseMargin()
     {
       DMatrix d = new DMatrix("libs/agaricus.txt.test");
