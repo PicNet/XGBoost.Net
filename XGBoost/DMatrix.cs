@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Win32.SafeHandles;
+using System.Runtime.InteropServices;
 
 namespace XGBoost
 {
@@ -28,9 +29,26 @@ namespace XGBoost
       return 0;
     }
 
-    public float[][] GetFloatInfo()
+    public float[] GetFloatInfo(string field)
     {
-      return null;
+      ulong lenULong;
+      IntPtr result;
+      int output = DllMethods.XGDMatrixGetFloatInfo(_handle, field, out lenULong, out result);
+      if (output == -1) throw new DllFailException("XGDMatrixGetFloatInfo() in DMatrix.GetFloatInfo() failed");
+
+      int len = unchecked((int)lenULong);
+      float[] floats = new float[len];
+      for (int i = 0; i < len; i++)
+      {
+        byte[] floatBytes = new byte[4];
+        floatBytes[0] = Marshal.ReadByte(result, 4*i + 0);
+        floatBytes[1] = Marshal.ReadByte(result, 4*i + 1);
+        floatBytes[2] = Marshal.ReadByte(result, 4*i + 2);
+        floatBytes[3] = Marshal.ReadByte(result, 4*i + 3);
+        float f = System.BitConverter.ToSingle(floatBytes, 0);
+        floats[i] = f;
+      }
+      return floats;
     }
 
     public string[] GetLabel()

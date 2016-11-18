@@ -16,5 +16,8 @@ namespace XGBoost
 
     [DllImport("libs/libxgboost.dll")]
     public static extern int XGDMatrixNumRow(DMatrixHandle handle, out ulong rows);
+
+    [DllImport("libs/libxgboost.dll")]
+    public static extern int XGDMatrixGetFloatInfo(DMatrixHandle handle, string field, out ulong len, out IntPtr result);
   }
 }

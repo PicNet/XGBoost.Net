@@ -7,11 +7,15 @@ namespace Demo
   {
     static void Main(string[] args)
     {
+      // load file from text file
       DMatrix d = new DMatrix("libs/agaricus.txt.test");
+
+      // get how many columns and rows the DMatrix has
       int cols = d.NumCol();
-      Console.WriteLine("cols = " + cols.ToString());
       int rows = d.NumRow();
-      Console.WriteLine("rows = " + rows.ToString());
+
+      float[] floatInfo = d.GetFloatInfo("label");
+
       Console.ReadKey();
     }
   }
