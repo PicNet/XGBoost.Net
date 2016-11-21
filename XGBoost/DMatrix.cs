@@ -7,19 +7,19 @@ namespace XGBoost
   public class DMatrix : IDisposable
   {
     private DMatrixHandle _handle;
-    private string[] featureNames;
-    private string[] featureTypes;
+    private string[] _featureNames;
+    private string[] _featureTypes;
 
     public string[] FeatureNames
     {
-      get { return featureNames; }
-      set { featureNames = value; }
+      get { return _featureNames; }
+      set { _featureNames = value; }
     }
 
     public string[] FeatureTypes
     {
-      get { return featureTypes; }
-      set { featureTypes = value; }
+      get { return _featureTypes; }
+      set { _featureTypes = value; }
     }
 
     public float[] BaseMargin
@@ -40,11 +40,19 @@ namespace XGBoost
       set { SetFloatInfo("weight", value); }
     }
 
-    public DMatrix(string dataPath, bool silent = false)
+    public DMatrix(string dataPath = null, bool silent = false, 
+                   string[] featureNames = null, string[] featureTypes = null)
     {
+      if (dataPath == "")
+      {
+        return;
+      }
+
       int output = DllMethods.XGDMatrixCreateFromFile(dataPath, silent ? 1 : 0, out _handle);
       if (output == -1) 
         throw new DllFailException("XGDMatrixCreateFromFile() in DMatrix() failed");
+      FeatureNames = featureNames;
+      FeatureTypes = featureTypes;
     }
 
     public float[] GetFloatInfo(string field)
@@ -111,11 +119,6 @@ namespace XGBoost
       int output = DllMethods.XGDMatrixSetGroup(_handle, group, len);
       if (output == -1)
         throw new DllFailException("XGDMatrixSetGroup() in DMatrix.SetGroup() failed");
-    }
-
-    public DMatrix Slice()
-    {
-      return null;
     }
 
     public void Dispose()
