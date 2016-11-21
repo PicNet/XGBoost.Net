@@ -10,23 +10,5 @@ namespace XGBoost
 
     [DllImport("libs/libxgboost.dll")]
     public static extern int XGDMatrixFree(IntPtr handle);
-
-    [DllImport("libs/libxgboost.dll")]
-    public static extern int XGDMatrixNumCol(DMatrixHandle handle, out ulong cols);
-
-    [DllImport("libs/libxgboost.dll")]
-    public static extern int XGDMatrixNumRow(DMatrixHandle handle, out ulong rows);
-
-    [DllImport("libs/libxgboost.dll")]
-    public static extern int XGDMatrixGetFloatInfo(DMatrixHandle handle, string field, out ulong len, out IntPtr result);
-
-    [DllImport("libs/libxgboost.dll")]
-    public static extern int XGDMatrixSetFloatInfo(DMatrixHandle handle, string field, float[] array, ulong len);
-
-    [DllImport("libs/libxgboost.dll")]
-    public static extern int XGDMatrixSaveBinary(DMatrixHandle handle, string fname, int silent);
-
-    [DllImport("libs/libxgboost.dll")]
-    public static extern int XGDMatrixSetGroup(DMatrixHandle handle, int[] group, ulong len);
   }
 }
