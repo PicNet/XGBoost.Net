@@ -105,8 +105,12 @@ namespace XGBoost
         throw new DllFailException("XGDMatrixSetFloatInfo() in DMatrix.SetFloatInfo() failed");
     }
 
-    public void SetGroup()
+    public void SetGroup(int[] group)
     {
+      ulong len = (ulong)group.Length;
+      int output = DllMethods.XGDMatrixSetGroup(_handle, group, len);
+      if (output == -1)
+        throw new DllFailException("XGDMatrixSetGroup() in DMatrix.SetGroup() failed");
     }
 
     public DMatrix Slice()

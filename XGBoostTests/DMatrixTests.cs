@@ -141,5 +141,14 @@ namespace XGBoostTests
       Assert.AreEqual(orgDMatrix.NumCol(), binDMatrix.NumCol());
       File.Delete("libs/agaricus.txt.test.bin");
     }
+
+    [TestMethod]
+    public void SetGroup()
+    {
+      DMatrix d = new DMatrix("libs/agaricus.txt.test");
+      int[] group = { 1, 3, 7 };
+      d.SetGroup(group);
+      // if we reach here with no exception then we assume it passes
+    }
   }
 }
