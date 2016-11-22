@@ -4,8 +4,9 @@ using Microsoft.Win32.SafeHandles;
 
 namespace XGBoost
 {
-  public class Booster
+  public class Booster : IDisposable
   {
+    private bool disposed = false;
     private IntPtr _handle;
     private const int NormalPrediction = 0;  // optionMask value for XGBoosterPredict
 
@@ -58,6 +59,22 @@ namespace XGBoost
         preds[i] = pred;
       }
       return preds;
+    }
+
+    // Dispose pattern from MSDN documentation
+    public void Dispose()
+    {
+      Dispose(true);
+      GC.SuppressFinalize(this);
+    }
+
+    // Dispose pattern from MSDN documentation
+    protected virtual void Dispose(bool disposing)
+    {
+      if (disposed)
+        return;
+      DllMethods.XGDMatrixFree(_handle);
+      disposed = true;
     }
   }
 }
