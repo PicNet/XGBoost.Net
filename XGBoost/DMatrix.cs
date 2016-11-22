@@ -6,6 +6,11 @@ namespace XGBoost
   public class DMatrix : IDisposable
   {
     private DMatrixHandle _handle;
+    
+    public DMatrixHandle Handle
+    {
+      get { return _handle; }
+    }
 
     public DMatrix(float[][] data)
     {
@@ -14,7 +19,7 @@ namespace XGBoost
       float missing = -1.0F; // abritrary value
       int output = DllMethods.XGDMatrixCreateFromMat(data, nrows, ncols, missing, out _handle);
       if (output == -1) 
-        throw new DllFailException("XGDMatrixCreateFromFile() in DMatrix() failed");
+        throw new DllFailException("XGDMatrixCreateFromMat() in DMatrix() failed");
     }
 
     public void Dispose()
@@ -26,7 +31,7 @@ namespace XGBoost
     }
   }
 
-  internal class DMatrixHandle : SafeHandleZeroOrMinusOneIsInvalid
+  public class DMatrixHandle : SafeHandleZeroOrMinusOneIsInvalid
   {
     private DMatrixHandle()
         : base(true)

@@ -7,9 +7,18 @@ namespace XGBoost
   {
     private BoosterHandle _handle;
 
-    public Booster(float[][] data)
+    public BoosterHandle Handle
     {
-      
+      get { return _handle; }
+    }
+
+    public Booster(DMatrix dmat)
+    {
+      DMatrixHandle[] dmats = { dmat.Handle };
+      ulong len = unchecked((ulong)dmats.Length);
+      int output = DllMethods.XGBoosterCreate(dmats, len, out _handle);
+      if (output == -1)
+        throw new DllFailException("XGBoosterCreate() in Booster() failed");
     }
 
     public void Dispose()
@@ -21,7 +30,7 @@ namespace XGBoost
     }
   }
 
-  internal class BoosterHandle : SafeHandleZeroOrMinusOneIsInvalid
+  public class BoosterHandle : SafeHandleZeroOrMinusOneIsInvalid
   {
     private BoosterHandle()
         : base(true)
