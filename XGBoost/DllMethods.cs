@@ -22,5 +22,8 @@ namespace XGBoost
 
     [DllImport("libs/libxgboost.dll")]
     public static extern int XGBoosterFree(IntPtr handle);
+
+    [DllImport("libs/libxgboost.dll")]
+    public static extern int XGBoosterUpdateOneIter(BoosterHandle bHandle, int iter, DMatrixHandle dHandle);
   }
 }

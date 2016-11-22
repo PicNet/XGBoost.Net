@@ -21,6 +21,11 @@ namespace XGBoost
         throw new DllFailException("XGBoosterCreate() in Booster() failed");
     }
 
+    public void Update(DMatrix dmat, int iter)
+    {
+      DllMethods.XGBoosterUpdateOneIter(Handle, iter, dmat.Handle);
+    }
+
     public void Dispose()
     {
       if (_handle != null && !_handle.IsInvalid)
