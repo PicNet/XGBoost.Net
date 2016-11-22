@@ -30,7 +30,8 @@ namespace XGBoost
 
     override protected bool ReleaseHandle()
     {
-      return true;
+      int output = DllMethods.XGBoosterFree(handle);
+      return output == 0 ? true : false;
     }
   }
 }

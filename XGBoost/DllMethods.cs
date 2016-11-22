@@ -10,5 +10,11 @@ namespace XGBoost
 
     [DllImport("libs/libxgboost.dll")]
     public static extern int XGDMatrixFree(IntPtr handle);
+
+    [DllImport("libs/libxgboost.dll")]
+    public static extern int XGBoosterCreate(DMatrixHandle[] dmats, ulong len, out BoosterHandle handle);
+
+    [DllImport("libs/libxgboost.dll")]
+    public static extern int XGBoosterFree(IntPtr handle);
   }
 }
