@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace XGBoost
+﻿namespace XGBoost
 {
   class XGBRegressor
   {
@@ -17,18 +11,25 @@ namespace XGBoost
 
     public void Fit(float[][] data, float[] labels)
     {
-      DMatrix dmat = new DMatrix(data, labels);
-      _booster = Train(dmat);
+      DMatrix dTrain = new DMatrix(data, labels);
+      _booster = Train(dTrain);
     }
 
-    public Booster Train(DMatrix dmat)
+    public Booster Train(DMatrix dTrain)
     {
-      Booster booster = new Booster(dmat);
+      Booster booster = new Booster(dTrain);
       for (int i = 0; i < _boostRounds; i++)
       {
-        booster.Update(dmat, i);
+        booster.Update(dTrain, i);
       }
       return booster;
+    }
+
+    public float[] Predict(float[][] data)
+    {
+      DMatrix dTest = new DMatrix(data);
+      float[] preds = _booster.Predict(dTest);
+      return preds;
     }
   }
 }
