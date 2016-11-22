@@ -1,6 +1,6 @@
 ﻿namespace XGBoost
 {
-  class XGBRegressor
+  public class XGBRegressor
   {
     private int _boostRounds = 10;
     private Booster _booster;

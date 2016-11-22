@@ -7,7 +7,7 @@ namespace XGBoost
   public class DMatrix : IDisposable
   {
     private DMatrixHandle _handle;
-    private float Missing = -1.0F; // arbitrary value used in DMatrix()
+    private float Missing = -1.0F; // arbitrary value used to represent a missing value
     
     public DMatrixHandle Handle
     {
@@ -22,9 +22,10 @@ namespace XGBoost
 
     public DMatrix(float[][] data, float[] labels = null)
     {
+      float[] data1D = Flatten2DArray(data);
       ulong nrows = unchecked((ulong)data.Length);
       ulong ncols = unchecked((ulong)data[0].Length);
-      int output = DllMethods.XGDMatrixCreateFromMat(data, nrows, ncols, Missing, out _handle);
+      int output = DllMethods.XGDMatrixCreateFromMat(data1D, nrows, ncols, Missing, out _handle);
       if (output == -1) 
         throw new DllFailException("XGDMatrixCreateFromMat() in DMatrix() failed");
 
@@ -34,7 +35,27 @@ namespace XGBoost
       }
     }
 
-    public float[] GetFloatInfo(string field)
+    private float[] Flatten2DArray(float[][] data2D)
+    {
+      int elementsNo = 0;
+      for (int row = 0; row < data2D.Length; row++)
+      {
+        elementsNo += data2D[row].Length;
+      }
+
+      float[] data1D = new float[elementsNo];
+      int ind = 0;
+      for (int row = 0; row < data2D.Length; row++)
+      {
+        for (int col = 0; col < data2D[row].Length; col++)
+        {
+          data1D[ind] = data2D[row][col];
+        }
+      }
+      return data1D;
+    }
+
+    private float[] GetFloatInfo(string field)
     {
       ulong lenULong;
       IntPtr result;
@@ -57,7 +78,7 @@ namespace XGBoost
       return floatInfo;
     }
 
-    public void SetFloatInfo(string field, float[] floatInfo)
+    private void SetFloatInfo(string field, float[] floatInfo)
     {
       ulong len = (ulong)floatInfo.Length;
       int output = DllMethods.XGDMatrixSetFloatInfo(_handle, field, floatInfo, len);
