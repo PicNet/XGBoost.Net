@@ -7,14 +7,12 @@ namespace XGBoost
   {
     private DMatrixHandle _handle;
 
-    public DMatrix(string dataPath = null, bool silent = false)
+    public DMatrix(float[][] data)
     {
-      if (dataPath == "")
-      {
-        return;
-      }
-
-      int output = DllMethods.XGDMatrixCreateFromFile(dataPath, silent ? 1 : 0, out _handle);
+      ulong nrows = unchecked((ulong)data.Length);
+      ulong ncols = unchecked((ulong)data[0].Length);
+      float missing = -1.0F; // abritrary value
+      int output = DllMethods.XGDMatrixCreateFromMat(data, nrows, ncols, missing, out _handle);
       if (output == -1) 
         throw new DllFailException("XGDMatrixCreateFromFile() in DMatrix() failed");
     }
