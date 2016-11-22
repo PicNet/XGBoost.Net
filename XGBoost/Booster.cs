@@ -4,19 +4,19 @@ using Microsoft.Win32.SafeHandles;
 
 namespace XGBoost
 {
-  public class Booster : IDisposable
+  public class Booster
   {
-    private BoosterHandle _handle;
+    private IntPtr _handle;
     private const int NormalPrediction = 0;  // optionMask value for XGBoosterPredict
 
-    public BoosterHandle Handle
+    public IntPtr Handle
     {
       get { return _handle; }
     }
 
     public Booster(DMatrix dTrain)
     {
-      DMatrixHandle[] dmats = { dTrain.Handle };
+      IntPtr[] dmats = { dTrain.Handle };
       ulong len = unchecked((ulong)dmats.Length);
       int output = DllMethods.XGBoosterCreate(dmats, len, out _handle);
       if (output == -1)
@@ -58,28 +58,6 @@ namespace XGBoost
         preds[i] = pred;
       }
       return preds;
-    }
-
-    public void Dispose()
-    {
-      if (_handle != null && !_handle.IsInvalid)
-      {
-        _handle.Dispose();
-      }
-    }
-  }
-
-  public class BoosterHandle : SafeHandleZeroOrMinusOneIsInvalid
-  {
-    private BoosterHandle()
-        : base(true)
-    {
-    }
-
-    override protected bool ReleaseHandle()
-    {
-      int output = DllMethods.XGBoosterFree(handle);
-      return output == 0 ? true : false;
     }
   }
 }

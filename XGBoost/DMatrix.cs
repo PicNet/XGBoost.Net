@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 
 namespace XGBoost
 {
-  public class DMatrix : IDisposable
+  public class DMatrix
   {
-    private DMatrixHandle _handle;
+    private IntPtr _handle;
     private float Missing = -1.0F; // arbitrary value used to represent a missing value
     
-    public DMatrixHandle Handle
+    public IntPtr Handle
     {
       get { return _handle; }
     }
@@ -84,28 +84,6 @@ namespace XGBoost
       int output = DllMethods.XGDMatrixSetFloatInfo(_handle, field, floatInfo, len);
       if (output == -1)
         throw new DllFailException("XGDMatrixSetFloatInfo() in DMatrix.SetFloatInfo() failed");
-    }
-
-    public void Dispose()
-    {
-      if (_handle != null && !_handle.IsInvalid)
-      {
-        _handle.Dispose();
-      }
-    }
-  }
-
-  public class DMatrixHandle : SafeHandleZeroOrMinusOneIsInvalid
-  {
-    private DMatrixHandle()
-        : base(true)
-    {
-    }
-
-    override protected bool ReleaseHandle()
-    {
-      int output = DllMethods.XGDMatrixFree(handle);
-      return output == 0 ? true : false;
     }
   }
 }
