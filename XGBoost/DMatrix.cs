@@ -7,6 +7,7 @@ namespace XGBoost
   public class DMatrix : IDisposable
   {
     private DMatrixHandle _handle;
+    private float Missing = -1.0F; // arbitrary value used in DMatrix()
     
     public DMatrixHandle Handle
     {
@@ -23,8 +24,7 @@ namespace XGBoost
     {
       ulong nrows = unchecked((ulong)data.Length);
       ulong ncols = unchecked((ulong)data[0].Length);
-      float missing = -1.0F; // abritrary value
-      int output = DllMethods.XGDMatrixCreateFromMat(data, nrows, ncols, missing, out _handle);
+      int output = DllMethods.XGDMatrixCreateFromMat(data, nrows, ncols, Missing, out _handle);
       if (output == -1) 
         throw new DllFailException("XGDMatrixCreateFromMat() in DMatrix() failed");
 
@@ -51,7 +51,7 @@ namespace XGBoost
         floatBytes[1] = Marshal.ReadByte(result, 4 * i + 1);
         floatBytes[2] = Marshal.ReadByte(result, 4 * i + 2);
         floatBytes[3] = Marshal.ReadByte(result, 4 * i + 3);
-        float f = System.BitConverter.ToSingle(floatBytes, 0);
+        float f = BitConverter.ToSingle(floatBytes, 0);
         floatInfo[i] = f;
       }
       return floatInfo;
