@@ -51,7 +51,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DMatrixTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
