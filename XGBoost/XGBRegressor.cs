@@ -18,7 +18,9 @@
       _learningRate = learningRate;
     }
 
-    public void Fit(float[][] data, float[] labels)
+    public void Fit(float[][] data, float[] labels, float[][] evalSet = null,
+                    string evalMetric = null, int earlyStoppingRounds = -1,
+                    bool verbose = true)
     {
       DMatrix dTrain = new DMatrix(data, labels);
       _booster = Train(dTrain);
