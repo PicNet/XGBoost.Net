@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Microsoft.Win32.SafeHandles;
+using System.Collections.Generic;
 
 namespace XGBoost
 {
@@ -15,7 +15,7 @@ namespace XGBoost
       get { return _handle; }
     }
 
-    public Booster(DMatrix dTrain)
+    public Booster(IDictionary<string, object> parameters, DMatrix dTrain)
     {
       IntPtr[] dmats = { dTrain.Handle };
       ulong len = unchecked((ulong)dmats.Length);

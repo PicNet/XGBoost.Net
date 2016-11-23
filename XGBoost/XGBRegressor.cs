@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace XGBoost
@@ -9,7 +8,7 @@ namespace XGBoost
     public IDictionary<string, object> parameters = new Dictionary<string, object>();
 
     /*
-     * Most of these paramaters probably don't work now since their behaviour needs to
+     * TODO: Most of these paramaters probably don't work now since their behaviour needs to
      * be implemented. Only the essential parameters are actually implemented
      */
     public XGBRegressor(int maxDepth = 3, float learningRate = 0.1F, int nEstimators = 100,
@@ -44,7 +43,7 @@ namespace XGBoost
     }
 
     /*
-     * Most of these paramaters probably don't work now since their behaviour needs to
+     * TODO: Most of these paramaters probably don't work now since their behaviour needs to
      * be implemented. Only the essential parameters are actually implemented
      */
     public void Fit(float[][] data, float[] labels, float[][] evalSet = null,
@@ -56,7 +55,7 @@ namespace XGBoost
     }
 
     /*
-     * Most of these paramaters probably don't work now since their behaviour needs to
+     * TODO: Most of these paramaters probably don't work now since their behaviour needs to
      * be implemented. Only the essential parameters are actually implemented
      */
     public Booster Train(IDictionary<string, object> parameters, DMatrix dTrain,
@@ -67,15 +66,18 @@ namespace XGBoost
                          bool verboseEval = true, Object learningRates = null,
                          string xgbModel = null, Object callbacks[] = null)
     {
-      Booster booster = new Booster(dTrain);
-      int boostRounds = 10;
-      for (int i = 0; i < boostRounds; i++)
+      Booster booster = new Booster(parameters, dTrain);
+      for (int i = 0; i < numBoostRound; i++)
       {
         booster.Update(dTrain, i);
       }
       return booster;
     }
 
+    /*
+     * TODO: Most of these paramaters probably don't work now since their behaviour needs to
+     * be implemented. Only the essential parameters are actually implemented
+     */
     public float[] Predict(float[][] data, bool outputMargin = false,
                            int nTreeLimit = 0)
     {
