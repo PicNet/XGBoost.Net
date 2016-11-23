@@ -12,24 +12,7 @@ namespace Demo
     static int testRows = 1611;
 
     static void Main(string[] args)
-    {
-      //float[][] dataTrain = GetDataTrain();
-      //float[] labelsTrain = GetLabelsTrain();
-      /*
-      for (int i = 0; i < labelsTrain.Length; i++)
-      {
-        Console.WriteLine((i+1).ToString() + ": " + labelsTrain[i].ToString());
-      }
-      Console.ReadKey();
-      */
-      /*
-      for (int i = 0; i < dataTrain[0].Length; i++)
-      {
-        Console.WriteLine((i+1).ToString() + ": " + dataTrain[0][i].ToString());
-      }
-      Console.ReadKey();
-      */
-      
+    {      
       float[][] dataTrain = GetDataTrain();
       float[] labelsTrain = GetLabelsTrain();
       float[][] dataTest = GetDataTest();
