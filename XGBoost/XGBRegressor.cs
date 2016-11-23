@@ -19,24 +19,24 @@ namespace XGBoost
                         float scalePosWeight = 1, float baseScore = 0.5F, int seed = 0,
                         float missing = float.NaN)
     {
-      parameters["maxDepth"] = maxDepth;
-      parameters["learningRate"] = learningRate;
-      parameters["nEstimators"] = nEstimators;
+      parameters["max_depth"] = maxDepth;
+      parameters["learning_rate"] = learningRate;
+      parameters["n_estimators"] = nEstimators;
       parameters["silent"] = silent;
       parameters["objective"] = objective;
 
-      parameters["nThread"] = nThread;
+      parameters["nthread"] = nThread;
       parameters["gamma"] = gamma;
-      parameters["minChildWeight"] = minChildWeight;
-      parameters["maxDeltaStep"] = maxDeltaStep;
+      parameters["min_child_weight"] = minChildWeight;
+      parameters["max_delta_step"] = maxDeltaStep;
       parameters["subsample"] = subsample;
-      parameters["colSampleByTree"] = colSampleByTree;
-      parameters["colSampleByLevel"] = colSampleByLevel;
-      parameters["regAlpha"] = regAlpha;
-      parameters["regLambda"] = regLambda;
-      parameters["scalePosWeight"] = scalePosWeight;
+      parameters["col_sample_by_tree"] = colSampleByTree;
+      parameters["col_sample_by_level"] = colSampleByLevel;
+      parameters["reg_alpha"] = regAlpha;
+      parameters["reg_lambda"] = regLambda;
+      parameters["scale_pos_weight"] = scalePosWeight;
 
-      parameters["baseScore"] = baseScore;
+      parameters["base_score"] = baseScore;
       parameters["seed"] = seed;
       parameters["missing"] = missing;
       parameters["_Booster"] = null;

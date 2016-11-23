@@ -22,6 +22,7 @@ namespace XGBoost
       int output = DllMethods.XGBoosterCreate(dmats, len, out _handle);
       if (output == -1)
         throw new DllFailException("XGBoosterCreate() in Booster() failed");
+      SetParameters(parameters);
     }
 
     public void Update(DMatrix dTrain, int iter)
@@ -59,6 +60,39 @@ namespace XGBoost
         preds[i] = pred;
       }
       return preds;
+    }
+
+    public void SetParameters(IDictionary<string, Object> parameters)
+    {
+      /*
+      parameters["max_depth"] = maxDepth;
+      parameters["learning_rate"] = learningRate;
+      parameters["n_estimators"] = nEstimators;
+      parameters["silent"] = silent;
+      parameters["objective"] = objective;
+
+      parameters["nthread"] = nThread;
+      parameters["gamma"] = gamma;
+      parameters["min_child_weight"] = minChildWeight;
+      parameters["max_delta_step"] = maxDeltaStep;
+      parameters["subsample"] = subsample;
+      parameters["col_sample_by_tree"] = colSampleByTree;
+      parameters["col_sample_by_level"] = colSampleByLevel;
+      parameters["reg_alpha"] = regAlpha;
+      parameters["reg_lambda"] = regLambda;
+      parameters["scale_pos_weight"] = scalePosWeight;
+
+      parameters["base_score"] = baseScore;
+      parameters["seed"] = seed;
+      parameters["missing"] = missing;
+      parameters["_Booster"] = null;
+      */
+      SetParameter("max")
+    }
+
+    public void SetParameter(string name, string val)
+    {
+
     }
 
     // Dispose pattern from MSDN documentation
