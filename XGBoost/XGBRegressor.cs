@@ -1,11 +1,11 @@
-﻿namespace XGBoost
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace XGBoost
 {
   public class XGBRegressor
   {
-    private int _boostRounds = 10;
-    private Booster _booster;
-
-    private float _learningRate;
+    public IDictionary<string, object> parameters = new Dictionary<string, object>();
 
     public XGBRegressor(int maxDepth = 3, float learningRate = 0.1F, int nEstimators = 100,
                         bool silent = true, string objective = "reg:linear",
@@ -15,7 +15,27 @@
                         float scalePosWeight = 1, float baseScore = 0.5F, int seed = 0,
                         float missing = float.NaN)
     {
-      _learningRate = learningRate;
+      parameters["maxDepth"] = maxDepth;
+      parameters["learningRate"] = learningRate;
+      parameters["nEstimators"] = nEstimators;
+      parameters["silent"] = silent;
+      parameters["objective"] = objective;
+
+      parameters["nThread"] = nThread;
+      parameters["gamma"] = gamma;
+      parameters["minChildWeight"] = minChildWeight;
+      parameters["maxDeltaStep"] = maxDeltaStep;
+      parameters["subsample"] = subsample;
+      parameters["colSampleByTree"] = colSampleByTree;
+      parameters["colSampleByLevel"] = colSampleByLevel;
+      parameters["regAlpha"] = regAlpha;
+      parameters["regLambda"] = regLambda;
+      parameters["scalePosWeight"] = scalePosWeight;
+
+      parameters["baseScore"] = baseScore;
+      parameters["seed"] = seed;
+      parameters["missing"] = missing;
+      parameters["_Booster"] = null;
     }
 
     public void Fit(float[][] data, float[] labels, float[][] evalSet = null,
@@ -23,13 +43,14 @@
                     bool verbose = true)
     {
       DMatrix dTrain = new DMatrix(data, labels);
-      _booster = Train(dTrain);
+      parameters["_Booster"] = Train(dTrain);
     }
 
     public Booster Train(DMatrix dTrain)
     {
       Booster booster = new Booster(dTrain);
-      for (int i = 0; i < _boostRounds; i++)
+      int boostRounds = 10;
+      for (int i = 0; i < boostRounds; i++)
       {
         booster.Update(dTrain, i);
       }
@@ -40,7 +61,7 @@
                            int nTreeLimit = 0)
     {
       DMatrix dTest = new DMatrix(data);
-      float[] preds = _booster.Predict(dTest);
+      float[] preds = ((Booster)parameters["_Booster"]).Predict(dTest);
       return preds;
     }
   }
