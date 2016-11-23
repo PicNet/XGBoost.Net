@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace XGBoost
@@ -7,6 +8,10 @@ namespace XGBoost
   {
     public IDictionary<string, object> parameters = new Dictionary<string, object>();
 
+    /*
+     * Most of these paramaters probably don't work now since their behaviour needs to
+     * be implemented. Only the essential parameters are actually implemented
+     */
     public XGBRegressor(int maxDepth = 3, float learningRate = 0.1F, int nEstimators = 100,
                         bool silent = true, string objective = "reg:linear",
                         int nThread = -1, float gamma = 0, int minChildWeight = 1,
@@ -38,15 +43,29 @@ namespace XGBoost
       parameters["_Booster"] = null;
     }
 
+    /*
+     * Most of these paramaters probably don't work now since their behaviour needs to
+     * be implemented. Only the essential parameters are actually implemented
+     */
     public void Fit(float[][] data, float[] labels, float[][] evalSet = null,
                     string evalMetric = null, int? earlyStoppingRounds = null,
                     bool verbose = true)
     {
       DMatrix dTrain = new DMatrix(data, labels);
-      parameters["_Booster"] = Train(dTrain);
+      parameters["_Booster"] = Train(parameters, dTrain);
     }
 
-    public Booster Train(DMatrix dTrain)
+    /*
+     * Most of these paramaters probably don't work now since their behaviour needs to
+     * be implemented. Only the essential parameters are actually implemented
+     */
+    public Booster Train(IDictionary<string, object> parameters, DMatrix dTrain,
+                         int numBoostRound = 10, Tuple<DMatrix, string>[] evals = null,
+                         Func<string, float> obj = null, Func<float, float> fEval = null,
+                         bool maximize = false, int? earlyStoppingRounds = null,
+                         Object evalsResult = null,
+                         bool verboseEval = true, Object learningRates = null,
+                         string xgbModel = null, Object callbacks[] = null)
     {
       Booster booster = new Booster(dTrain);
       int boostRounds = 10;
