@@ -19,7 +19,7 @@
     }
 
     public void Fit(float[][] data, float[] labels, float[][] evalSet = null,
-                    string evalMetric = null, int earlyStoppingRounds = -1,
+                    string evalMetric = null, int? earlyStoppingRounds = null,
                     bool verbose = true)
     {
       DMatrix dTrain = new DMatrix(data, labels);
@@ -36,7 +36,8 @@
       return booster;
     }
 
-    public float[] Predict(float[][] data)
+    public float[] Predict(float[][] data, bool outputMargin = false,
+                           int nTreeLimit = 0)
     {
       DMatrix dTest = new DMatrix(data);
       float[] preds = _booster.Predict(dTest);
