@@ -5,8 +5,17 @@
     private int _boostRounds = 10;
     private Booster _booster;
 
-    public XGBRegressor()
-    { 
+    private float _learningRate;
+
+    public XGBRegressor(int maxDepth = 3, float learningRate = 0.1F, int nEstimators = 100,
+                        bool silent = true, string objective = "reg:linear",
+                        int nThread = -1, float gamma = 0, int minChildWeight = 1,
+                        int maxDeltaStep = 0, float subsample = 1, float colSampleByTree = 1,
+                        float colSampleByLevel = 1, float regAlpha = 0, float regLambda = 1,
+                        float scalePosWeight = 1, float baseScore = 0.5F, int seed = 0,
+                        float missing = float.NaN)
+    {
+      _learningRate = learningRate;
     }
 
     public void Fit(float[][] data, float[] labels)

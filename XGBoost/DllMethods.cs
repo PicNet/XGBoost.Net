@@ -28,6 +28,9 @@ namespace XGBoost
     public static extern int XGBoosterFree(IntPtr handle);
 
     [DllImport("libs/libxgboost.dll")]
+    public static extern int XGBoosterSetParam(IntPtr handle, string name, string val);
+
+    [DllImport("libs/libxgboost.dll")]
     public static extern int XGBoosterUpdateOneIter(IntPtr bHandle, int iter, 
                                                     IntPtr dHandle);
 
