@@ -64,35 +64,33 @@ namespace XGBoost
 
     public void SetParameters(IDictionary<string, Object> parameters)
     {
-      /*
-      parameters["max_depth"] = maxDepth;
-      parameters["learning_rate"] = learningRate;
-      parameters["n_estimators"] = nEstimators;
-      parameters["silent"] = silent;
-      parameters["objective"] = objective;
+      SetParameter("max_depth", ((int)parameters["max_depth"]).ToString());
+      SetParameter("learning_rate", ((float)parameters["learning_rate"]).ToString());
+      SetParameter("n_estimators", ((int)parameters["n_estimators"]).ToString());
+      SetParameter("silent", ((bool)parameters["silent"]).ToString());
+      SetParameter("objective", ((string)parameters["objective"]).ToString());
 
-      parameters["nthread"] = nThread;
-      parameters["gamma"] = gamma;
-      parameters["min_child_weight"] = minChildWeight;
-      parameters["max_delta_step"] = maxDeltaStep;
-      parameters["subsample"] = subsample;
-      parameters["col_sample_by_tree"] = colSampleByTree;
-      parameters["col_sample_by_level"] = colSampleByLevel;
-      parameters["reg_alpha"] = regAlpha;
-      parameters["reg_lambda"] = regLambda;
-      parameters["scale_pos_weight"] = scalePosWeight;
+      SetParameter("nthread", ((int)parameters["nthread"]).ToString());
+      SetParameter("gamma", ((float)parameters["gamma"]).ToString());
+      SetParameter("min_child_weight", ((int)parameters["min_child_weight"]).ToString());
+      SetParameter("max_delta_step", ((int)parameters["max_delta_step"]).ToString());
+      SetParameter("subsample", ((float)parameters["subsample"]).ToString());
+      SetParameter("colsample_by_tree", ((float)parameters["colsample_by_tree"]).ToString());
+      SetParameter("colsample_by_level", ((float)parameters["colsample_by_level"]).ToString());
+      SetParameter("reg_alpha", ((float)parameters["reg_alpha"]).ToString());
+      SetParameter("reg_lambda", ((float)parameters["reg_lambda"]).ToString());
+      SetParameter("scale_pos_weight", ((float)parameters["scale_pos_weight"]).ToString());
 
-      parameters["base_score"] = baseScore;
-      parameters["seed"] = seed;
-      parameters["missing"] = missing;
-      parameters["_Booster"] = null;
-      */
-      SetParameter("max")
+      SetParameter("base_score", ((float)parameters["base_score"]).ToString());
+      SetParameter("seed", ((int)parameters["seed"]).ToString());
+      SetParameter("missing", ((float)parameters["missing"]).ToString());
     }
 
     public void SetParameter(string name, string val)
     {
-
+      int output = DllMethods.XGBoosterSetParam(_handle, name, val);
+      if (output == -1)
+        throw new DllFailException("XGBoosterSetParam() in Booster.SetParameter() failed");
     }
 
     // Dispose pattern from MSDN documentation

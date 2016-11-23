@@ -30,8 +30,8 @@ namespace XGBoost
       parameters["min_child_weight"] = minChildWeight;
       parameters["max_delta_step"] = maxDeltaStep;
       parameters["subsample"] = subsample;
-      parameters["col_sample_by_tree"] = colSampleByTree;
-      parameters["col_sample_by_level"] = colSampleByLevel;
+      parameters["colsample_by_tree"] = colSampleByTree;
+      parameters["colsample_by_level"] = colSampleByLevel;
       parameters["reg_alpha"] = regAlpha;
       parameters["reg_lambda"] = regLambda;
       parameters["scale_pos_weight"] = scalePosWeight;
@@ -64,7 +64,7 @@ namespace XGBoost
                          bool maximize = false, int? earlyStoppingRounds = null,
                          Object evalsResult = null,
                          bool verboseEval = true, Object learningRates = null,
-                         string xgbModel = null, Object callbacks[] = null)
+                         string xgbModel = null, Object[] callbacks = null)
     {
       Booster booster = new Booster(parameters, dTrain);
       for (int i = 0; i < numBoostRound; i++)
