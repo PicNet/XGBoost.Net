@@ -1,46 +1,116 @@
 ﻿using System;
 using XGBoost;
+using Microsoft.VisualBasic.FileIO;
 
 namespace Demo
 {
   class Program
   {
+    static int trainCols = 126;
+    static int trainRows = 6513;
+    static int testCols = 126;
+    static int testRows = 1611;
+
     static void Main(string[] args)
     {
+      //float[][] dataTrain = GetDataTrain();
+      //float[] labelsTrain = GetLabelsTrain();
+      /*
+      for (int i = 0; i < labelsTrain.Length; i++)
+      {
+        Console.WriteLine((i+1).ToString() + ": " + labelsTrain[i].ToString());
+      }
+      Console.ReadKey();
+      */
+      /*
+      for (int i = 0; i < dataTrain[0].Length; i++)
+      {
+        Console.WriteLine((i+1).ToString() + ": " + dataTrain[0][i].ToString());
+      }
+      Console.ReadKey();
+      */
+      
       float[][] dataTrain = GetDataTrain();
-      float[] labels = GetLabels();
+      float[] labelsTrain = GetLabelsTrain();
       float[][] dataTest = GetDataTest();
 
       XGBRegressor xgbr = new XGBRegressor();
-      xgbr.Fit(dataTrain, labels);
+      xgbr.Fit(dataTrain, labelsTrain);
       float[] preds = xgbr.Predict(dataTest);
       PrintPreds(preds);
+      
     }
 
     static float[][] GetDataTrain()
     {
-      float[][] dataTrain = new float[2][];
-      dataTrain[0] = new float[1];
-      dataTrain[1] = new float[1];
-      dataTrain[0][0] = 0;
-      dataTrain[1][0] = 1;
-      return dataTrain;
+      using (TextFieldParser parser = new TextFieldParser(@"C:\dev\tests\testXgboost\agaricus.train.csv"))
+      {
+        parser.TextFieldType = FieldType.Delimited;
+        parser.SetDelimiters(",");
+        float[][] dataTrain = new float[trainRows][];
+        int row = 0;
+
+        while (!parser.EndOfData)
+        {
+          dataTrain[row] = new float[trainCols];
+          string[] fields = parser.ReadFields();
+
+          // skip label column in csv file
+          for (int col = 1; col < fields.Length; col++)
+          {
+            dataTrain[row][col - 1] = float.Parse(fields[col]);
+          }
+          row += 1;
+        }
+
+        return dataTrain;
+      }
     }
 
-    static float[] GetLabels()
+    static float[] GetLabelsTrain()
     {
-      float[] labels = { 0, 1 };
-      return labels;
+      using (TextFieldParser parser = new TextFieldParser(@"C:\dev\tests\testXgboost\agaricus.train.csv"))
+      {
+        parser.TextFieldType = FieldType.Delimited;
+        parser.SetDelimiters(",");
+        float[] labelsTrain = new float[trainRows];
+        int row = 0;
+
+        while (!parser.EndOfData)
+        {
+          string[] fields = parser.ReadFields();
+          labelsTrain[row] = float.Parse(fields[0]);
+          row += 1;
+        }
+
+        return labelsTrain;
+      }
     }
 
     static float[][] GetDataTest()
     {
-      float[][] dataTrain = new float[2][];
-      dataTrain[0] = new float[1];
-      dataTrain[1] = new float[1];
-      dataTrain[0][0] = 0;
-      dataTrain[1][0] = 1;
-      return dataTrain;
+      using (TextFieldParser parser = new TextFieldParser(@"C:\dev\tests\testXgboost\agaricus.test.csv"))
+      {
+        parser.TextFieldType = FieldType.Delimited;
+        parser.SetDelimiters(",");
+        float[][] dataTest = new float[testRows][];
+        int row = 0;
+
+        while (!parser.EndOfData)
+        {
+          dataTest[row] = new float[testCols];
+          string[] fields = parser.ReadFields();
+
+          // skip label column in csv file
+          for (int col = 1; col < fields.Length; col++)
+          {
+            dataTest[row][col - 1] = float.Parse(fields[col]);
+          }
+          row += 1;
+        }
+
+        return dataTest;
+      }
     }
 
     static void PrintPreds(float[] preds)
