@@ -6,6 +6,7 @@ namespace XGBoost
   public class XGBRegressor
   {
     public IDictionary<string, object> parameters = new Dictionary<string, object>();
+    public Booster booster;
 
     /*
      * TODO: Most of these paramaters probably don't work now since their behaviour needs to
@@ -30,8 +31,8 @@ namespace XGBoost
       parameters["min_child_weight"] = minChildWeight;
       parameters["max_delta_step"] = maxDeltaStep;
       parameters["subsample"] = subsample;
-      parameters["colsample_by_tree"] = colSampleByTree;
-      parameters["colsample_by_level"] = colSampleByLevel;
+      parameters["colsample_bytree"] = colSampleByTree;
+      parameters["colsample_bylevel"] = colSampleByLevel;
       parameters["reg_alpha"] = regAlpha;
       parameters["reg_lambda"] = regLambda;
       parameters["scale_pos_weight"] = scalePosWeight;
@@ -51,7 +52,7 @@ namespace XGBoost
                     bool verbose = true)
     {
       DMatrix dTrain = new DMatrix(data, labels);
-      parameters["_Booster"] = Train(parameters, dTrain);
+      booster = Train(parameters, dTrain, ((int)parameters["n_estimators"]));
     }
 
     /*
@@ -82,7 +83,7 @@ namespace XGBoost
                            int nTreeLimit = 0)
     {
       DMatrix dTest = new DMatrix(data);
-      float[] preds = ((Booster)parameters["_Booster"]).Predict(dTest);
+      float[] preds = booster.Predict(dTest);
       return preds;
     }
   }

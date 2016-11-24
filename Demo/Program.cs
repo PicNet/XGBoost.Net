@@ -18,7 +18,7 @@ namespace Demo
       float[] labelsTrain = GetLabelsTrain();
       float[][] dataTest = GetDataTest();
       */
-
+      
       float[][] dataTrain = new float[2][];
       dataTrain[0] = new float[1];
       dataTrain[1] = new float[1];
@@ -26,7 +26,7 @@ namespace Demo
       dataTrain[1][0] = 1;
       float[] labelsTrain = { 0, 1 };
       float[][] dataTest = dataTrain;
-
+      
       XGBRegressor xgbr = new XGBRegressor();
       xgbr.Fit(dataTrain, labelsTrain);
       float[] preds = xgbr.Predict(dataTest);

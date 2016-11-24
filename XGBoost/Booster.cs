@@ -23,6 +23,7 @@ namespace XGBoost
       if (output == -1)
         throw new DllFailException("XGBoosterCreate() in Booster() failed");
       SetParameters(parameters);
+      //PrintParameters(parameters); // TODO: remove after debugging done
     }
 
     public void Update(DMatrix dTrain, int iter)
@@ -75,8 +76,8 @@ namespace XGBoost
       SetParameter("min_child_weight", ((int)parameters["min_child_weight"]).ToString());
       SetParameter("max_delta_step", ((int)parameters["max_delta_step"]).ToString());
       SetParameter("subsample", ((float)parameters["subsample"]).ToString());
-      SetParameter("colsample_by_tree", ((float)parameters["colsample_by_tree"]).ToString());
-      SetParameter("colsample_by_level", ((float)parameters["colsample_by_level"]).ToString());
+      SetParameter("colsample_bytree", ((float)parameters["colsample_bytree"]).ToString());
+      SetParameter("colsample_bylevel", ((float)parameters["colsample_bylevel"]).ToString());
       SetParameter("reg_alpha", ((float)parameters["reg_alpha"]).ToString());
       SetParameter("reg_lambda", ((float)parameters["reg_lambda"]).ToString());
       SetParameter("scale_pos_weight", ((float)parameters["scale_pos_weight"]).ToString());
@@ -84,6 +85,30 @@ namespace XGBoost
       SetParameter("base_score", ((float)parameters["base_score"]).ToString());
       SetParameter("seed", ((int)parameters["seed"]).ToString());
       SetParameter("missing", ((float)parameters["missing"]).ToString());
+    }
+
+    public void PrintParameters(IDictionary<string, Object> parameters)
+    {
+      Console.WriteLine("max_depth: " + ((int)parameters["max_depth"]).ToString());
+      Console.WriteLine("learning_rate: " + ((float)parameters["learning_rate"]).ToString());
+      Console.WriteLine("n_estimators: " + ((int)parameters["n_estimators"]).ToString());
+      Console.WriteLine("silent: " + ((bool)parameters["silent"]).ToString());
+      Console.WriteLine("objective: " + ((string)parameters["objective"]).ToString());
+
+      Console.WriteLine("nthread: " + ((int)parameters["nthread"]).ToString());
+      Console.WriteLine("gamma: " + ((float)parameters["gamma"]).ToString());
+      Console.WriteLine("min_child_weight: " + ((int)parameters["min_child_weight"]).ToString());
+      Console.WriteLine("max_delta_step: " + ((int)parameters["max_delta_step"]).ToString());
+      Console.WriteLine("subsample: " + ((float)parameters["subsample"]).ToString());
+      Console.WriteLine("colsample_bytree: " + ((float)parameters["colsample_bytree"]).ToString());
+      Console.WriteLine("colsample_bylevel: " + ((float)parameters["colsample_bylevel"]).ToString());
+      Console.WriteLine("reg_alpha: " + ((float)parameters["reg_alpha"]).ToString());
+      Console.WriteLine("reg_lambda: " + ((float)parameters["reg_lambda"]).ToString());
+      Console.WriteLine("scale_pos_weight: " + ((float)parameters["scale_pos_weight"]).ToString());
+
+      Console.WriteLine("base_score: " + ((float)parameters["base_score"]).ToString());
+      Console.WriteLine("seed: " + ((int)parameters["seed"]).ToString());
+      Console.WriteLine("missing: " + ((float)parameters["missing"]).ToString());
     }
 
     public void SetParameter(string name, string val)
