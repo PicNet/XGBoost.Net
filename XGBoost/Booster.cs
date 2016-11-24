@@ -53,19 +53,10 @@ namespace XGBoost
       for (int i = 0; i < predsNo; i++)
       {
         byte[] floatBytes = new byte[4];
-        
         for (int b = 0; b < 4; b++)
         {
           floatBytes[b] = Marshal.ReadByte(predsPtr, 4*i + b);
         }
-        
-        // TODO: remove below stuff
-        /*
-        floatBytes[0] = Marshal.ReadByte(predsPtr, 4 * i + 0);
-        floatBytes[1] = Marshal.ReadByte(predsPtr, 4 * i + 1);
-        floatBytes[2] = Marshal.ReadByte(predsPtr, 4 * i + 2);
-        floatBytes[3] = Marshal.ReadByte(predsPtr, 4 * i + 3);
-        */
         float pred = BitConverter.ToSingle(floatBytes, 0);
         preds[i] = pred;
       }

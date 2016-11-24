@@ -51,6 +51,7 @@ namespace XGBoost
         for (int col = 0; col < data2D[row].Length; col++)
         {
           data1D[ind] = data2D[row][col];
+          ind += 1;
         }
       }
       return data1D;
