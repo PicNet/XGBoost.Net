@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace XGBoost
 {
-  public class XGBRegressor
+  public class XGBClassifier
   {
     public IDictionary<string, object> parameters = new Dictionary<string, object>();
     public Booster booster;
 
-    public XGBRegressor(int maxDepth = 3, float learningRate = 0.1F, int nEstimators = 100,
-                        bool silent = true, string objective = "reg:linear",
+    public XGBClassifier(int maxDepth = 3, float learningRate = 0.1F, int nEstimators = 100,
+                        bool silent = true, string objective = "binary:logistic",
                         int nThread = -1, float gamma = 0, int minChildWeight = 1,
                         int maxDeltaStep = 0, float subsample = 1, float colSampleByTree = 1,
                         float colSampleByLevel = 1, float regAlpha = 0, float regLambda = 1,
@@ -80,6 +80,23 @@ namespace XGBoost
     {
       DMatrix dTest = new DMatrix(data);
       float[] preds = booster.Predict(dTest);
+      preds = convertTo0Or1(preds);
+      return preds;
+    }
+
+    private float[] convertTo0Or1(float[] preds)
+    {
+      for (int i = 0; i < preds.Length; i++)
+      {
+        if (preds[i] > 0.5F)
+        {
+          preds[i] = 1;
+        }
+        else 
+        {
+          preds[i] = 0;
+        }
+      }
       return preds;
     }
   }

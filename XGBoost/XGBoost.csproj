@@ -51,6 +51,7 @@
     <Compile Include="DllMethods.cs" />
     <Compile Include="DMatrix.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XGBClassifier.cs" />
     <Compile Include="XGBRegressor.cs" />
   </ItemGroup>
   <ItemGroup>
