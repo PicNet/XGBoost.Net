@@ -13,20 +13,21 @@ namespace Demo
 
     static void Main(string[] args)
     {
-      /* 
-      float[][] dataTrain = GetDataTrain();
-      float[] labelsTrain = GetLabelsTrain();
-      float[][] dataTest = GetDataTest();
-      */
       
       float[][] dataTrain = new float[2][];
       dataTrain[0] = new float[1];
       dataTrain[1] = new float[1];
-      dataTrain[0][0] = 0;
-      dataTrain[1][0] = 1;
-      float[] labelsTrain = { 0, 1 };
+      dataTrain[0][0] = 0.1F;
+      dataTrain[1][0] = 0.9F;
+      float[] labelsTrain = { 0.1F, 0.9F };
       float[][] dataTest = dataTrain;
       
+      /*
+      float[][] dataTrain = GetDataTrain();
+      float[] labelsTrain = GetLabelsTrain();
+      float[][] dataTest = GetDataTest();
+      */
+
       XGBRegressor xgbr = new XGBRegressor();
       xgbr.Fit(dataTrain, labelsTrain);
       float[] preds = xgbr.Predict(dataTest);
