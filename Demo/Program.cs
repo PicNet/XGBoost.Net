@@ -6,27 +6,16 @@ namespace Demo
 {
   class Program
   {
-    static int trainCols = 126;
-    static int trainRows = 6513;
-    static int testCols = 126;
-    static int testRows = 1611;
+    static int trainCols = 4;
+    static int trainRows = 891;
+    static int testCols = 3;
+    static int testRows = 418;
 
     static void Main(string[] args)
     {
-      
-      float[][] dataTrain = new float[2][];
-      dataTrain[0] = new float[1];
-      dataTrain[1] = new float[1];
-      dataTrain[0][0] = 0.1F;
-      dataTrain[1][0] = 0.9F;
-      float[] labelsTrain = { 0.1F, 0.9F };
-      float[][] dataTest = dataTrain;
-      
-      /*
       float[][] dataTrain = GetDataTrain();
       float[] labelsTrain = GetLabelsTrain();
       float[][] dataTest = GetDataTest();
-      */
 
       XGBRegressor xgbr = new XGBRegressor();
       xgbr.Fit(dataTrain, labelsTrain);
@@ -36,7 +25,7 @@ namespace Demo
 
     static float[][] GetDataTrain()
     {
-      using (TextFieldParser parser = new TextFieldParser(@"C:\dev\tests\testXgboost\agaricus.train.csv"))
+      using (TextFieldParser parser = new TextFieldParser(@"C:\dev\tests\testXgboost\simple_train.csv"))
       {
         parser.TextFieldType = FieldType.Delimited;
         parser.SetDelimiters(",");
@@ -45,7 +34,7 @@ namespace Demo
 
         while (!parser.EndOfData)
         {
-          dataTrain[row] = new float[trainCols];
+          dataTrain[row] = new float[trainCols-1];
           string[] fields = parser.ReadFields();
 
           // skip label column in csv file
@@ -62,7 +51,7 @@ namespace Demo
 
     static float[] GetLabelsTrain()
     {
-      using (TextFieldParser parser = new TextFieldParser(@"C:\dev\tests\testXgboost\agaricus.train.csv"))
+      using (TextFieldParser parser = new TextFieldParser(@"C:\dev\tests\testXgboost\simple_train.csv"))
       {
         parser.TextFieldType = FieldType.Delimited;
         parser.SetDelimiters(",");
@@ -82,7 +71,7 @@ namespace Demo
 
     static float[][] GetDataTest()
     {
-      using (TextFieldParser parser = new TextFieldParser(@"C:\dev\tests\testXgboost\agaricus.test.csv"))
+      using (TextFieldParser parser = new TextFieldParser(@"C:\dev\tests\testXgboost\simple_test.csv"))
       {
         parser.TextFieldType = FieldType.Delimited;
         parser.SetDelimiters(",");
@@ -94,10 +83,9 @@ namespace Demo
           dataTest[row] = new float[testCols];
           string[] fields = parser.ReadFields();
 
-          // skip label column in csv file
-          for (int col = 1; col < fields.Length; col++)
+          for (int col = 0; col < fields.Length; col++)
           {
-            dataTest[row][col - 1] = float.Parse(fields[col]);
+            dataTest[row][col] = float.Parse(fields[col]);
           }
           row += 1;
         }
