@@ -1,12 +1,12 @@
 ﻿using System;
 using Microsoft.VisualBasic.FileIO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using XGBoost;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace XGBoostTests
 {
     [TestClass]
-    public class XGBRegressorTests
+    public class XGBClassifierTests
     {
         [TestMethod]
         public void Predict()
@@ -15,10 +15,23 @@ namespace XGBoostTests
             float[] labelsTrain = GetLabelsTrain();
             float[][] dataTest = GetDataTest();
 
-            XGBRegressor xgbr = new XGBRegressor();
-            xgbr.Fit(dataTrain, labelsTrain);
-            float[] preds = xgbr.Predict(dataTest);
+            XGBClassifier xgbc = new XGBClassifier();
+            xgbc.Fit(dataTrain, labelsTrain);
+            float[] preds = xgbc.Predict(dataTest);
             Assert.IsTrue(PredsCorrect(preds));
+        }
+
+        [TestMethod]
+        public void PredictProba()
+        {
+            float[][] dataTrain = GetDataTrain();
+            float[] labelsTrain = GetLabelsTrain();
+            float[][] dataTest = GetDataTest();
+
+            XGBClassifier xgbc = new XGBClassifier();
+            xgbc.Fit(dataTrain, labelsTrain);
+            float[][] preds = xgbc.PredictProba(dataTest);
+            Assert.IsTrue(PredsProbaCorrect(preds));
         }
 
         private float[][] GetDataTrain()
@@ -102,7 +115,7 @@ namespace XGBoostTests
 
         private bool PredsCorrect(float[] preds)
         {
-            using (TextFieldParser parser = new TextFieldParser("libs/predsreg.csv"))
+            using (TextFieldParser parser = new TextFieldParser("libs/predsclas.csv"))
             {
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(",");
@@ -118,13 +131,39 @@ namespace XGBoostTests
                         float absDiff = Math.Abs(float.Parse(fields[col]) - preds[predInd]);
                         if (absDiff > 0.0001F)
                         {
+                            return false;
+                        }
+                        predInd += 1;
+                    }
+                    row += 1;
+                }
+            }
+            return true; // we haven't returned from a wrong prediction so everything is right
+        }
+
+        private bool PredsProbaCorrect(float[][] preds)
+        {
+            using (TextFieldParser parser = new TextFieldParser("libs/predsclasproba.csv"))
+            {
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
+                int row = 0;
+
+                while (!parser.EndOfData)
+                {
+                    string[] fields = parser.ReadFields();
+
+                    for (int col = 0; col < fields.Length; col++)
+                    {
+                        float absDiff = Math.Abs(float.Parse(fields[col]) - preds[row][col]);
+                        if (absDiff > 0.0001F)
+                        {
                             // TODO: figure out why it fails for only one line and change this to just return false
                             if (row != 152)
                             {
                                 return false;
                             }
                         }
-                        predInd += 1;
                     }
                     row += 1;
                 }

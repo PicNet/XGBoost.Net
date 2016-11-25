@@ -73,7 +73,8 @@ namespace XGBoost
     {
       var dTest = new DMatrix(data);
       var preds = booster.Predict(dTest);
-      return preds.Select(v => v > 0.5f ? new [] {v, 1 - v} : new[] { 1 - v, v }).ToArray();
+            //return preds.Select(v => v > 0.5f ? new [] {v, 1 - v} : new[] { 1 - v, v }).ToArray();
+      return preds.Select(v => new[] { 1 - v, v } ).ToArray();
     }
     
     private Booster Train(IDictionary<string, object> args, DMatrix dTrain,
