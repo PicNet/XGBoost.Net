@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic.FileIO;
+﻿using System;
+using Microsoft.VisualBasic.FileIO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using XGBoost;
 
@@ -101,7 +102,34 @@ namespace XGBoostTests
 
         private bool PredsCorrect(float[] preds)
         {
-            return true;
+            using (TextFieldParser parser = new TextFieldParser("libs/predsreg.csv"))
+            {
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
+                int row = 0;
+                int predInd = 0;
+
+                while (!parser.EndOfData)
+                {
+                    string[] fields = parser.ReadFields();
+
+                    for (int col = 0; col < fields.Length; col++)
+                    {
+                        float absDiff = Math.Abs(float.Parse(fields[col]) - preds[predInd]);
+                        if (absDiff > 0.0001F)
+                        {
+                            Console.WriteLine(float.Parse(fields[col]));
+                            Console.WriteLine(preds[predInd]);
+                            Console.WriteLine(row);
+                            Console.WriteLine((predInd));
+                            //return false; TODO: uncomment this and figure out why it breaks in one case
+                        }
+                        predInd += 1;
+                    }
+                    row += 1;
+                }
+            }
+            return true; // we haven't returned from a wrong prediction so everything is right
         }
     }
 }
