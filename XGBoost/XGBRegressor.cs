@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace XGBoost
 {
   public class XGBRegressor
   {
-    public IDictionary<string, object> parameters = new Dictionary<string, object>();
-    public Booster booster;
+    private readonly IDictionary<string, object> parameters = new Dictionary<string, object>();
+    private Booster booster;
 
     public XGBRegressor(int maxDepth = 3, float learningRate = 0.1F, int nEstimators = 100,
                         bool silent = true, string objective = "reg:linear",
@@ -47,40 +46,37 @@ namespace XGBoost
                     string evalMetric = null, int? earlyStoppingRounds = null,
                     bool verbose = true)
     {
-      DMatrix dTrain = new DMatrix(data, labels);
-      booster = Train(parameters, dTrain, ((int)parameters["n_estimators"]));
+      var train = new DMatrix(data, labels);
+      booster = Train(parameters, train, (int)parameters["n_estimators"]);
+    }    
+
+    /*
+     * TODO: Most of these paramaters probably don't work now since their behaviour needs to
+     *     public float[] Predict(float[][] data, bool outputMargin = false, int nTreeLimit = 0)
+     * be implemented. Only the essential parameters are actually implemented
+     */
+    public float[] Predict(float[][] data)
+    {
+      var test = new DMatrix(data);
+      return booster.Predict(test);
     }
 
     /*
      * TODO: Most of these paramaters probably don't work now since their behaviour needs to
-     * be implemented. Only the essential parameters are actually implemented
-     */
-    public Booster Train(IDictionary<string, object> parameters, DMatrix dTrain,
+     *    Train(IDictionary<string, object> args, DMatrix train,
                          int numBoostRound = 10, Tuple<DMatrix, string>[] evals = null,
                          Func<string, float> obj = null, Func<float, float> fEval = null,
                          bool maximize = false, int? earlyStoppingRounds = null,
                          Object evalsResult = null,
                          bool verboseEval = true, Object learningRates = null,
                          string xgbModel = null, Object[] callbacks = null)
-    {
-      Booster booster = new Booster(parameters, dTrain);
-      for (int i = 0; i < numBoostRound; i++)
-      {
-        booster.Update(dTrain, i);
-      }
-      return booster;
-    }
-
-    /*
-     * TODO: Most of these paramaters probably don't work now since their behaviour needs to
      * be implemented. Only the essential parameters are actually implemented
      */
-    public float[] Predict(float[][] data, bool outputMargin = false,
-                           int nTreeLimit = 0)
+    private Booster Train(IDictionary<string, object> args, DMatrix train, int numBoostRound = 10)
     {
-      DMatrix dTest = new DMatrix(data);
-      float[] preds = booster.Predict(dTest);
-      return preds;
+      var bst = new Booster(args, train);
+      for (var i = 0; i < numBoostRound; i++) { bst.Update(train, i); }
+      return bst;
     }
   }
 }

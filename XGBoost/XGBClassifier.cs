@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace XGBoost
 {
   public class XGBClassifier
   {
-    public IDictionary<string, object> parameters = new Dictionary<string, object>();
-    public Booster booster;
+    private readonly IDictionary<string, object> parameters = new Dictionary<string, object>();
+    private Booster booster;
 
     public XGBClassifier(int maxDepth = 3, float learningRate = 0.1F, int nEstimators = 100,
                         bool silent = true, string objective = "binary:logistic",
@@ -41,21 +42,41 @@ namespace XGBoost
 
     /*
      * TODO: Most of these paramaters probably don't work now since their behaviour needs to
-     * be implemented. Only the essential parameters are actually implemented
-     */
-    public void Fit(float[][] data, float[] labels, float[][] evalSet = null,
+     *     public void Fit(float[][] data, float[] labels, float[][] evalSet = null,
                     string evalMetric = null, int? earlyStoppingRounds = null,
                     bool verbose = true)
+     * be implemented. Only the essential parameters are actually implemented
+     */
+    public void Fit(float[][] data, float[] labels)
     {
-      DMatrix dTrain = new DMatrix(data, labels);
-      booster = Train(parameters, dTrain, ((int)parameters["n_estimators"]));
+      var train = new DMatrix(data, labels);
+      booster = Train(parameters, train, ((int)parameters["n_estimators"]));
     }
 
     /*
      * TODO: Most of these paramaters probably don't work now since their behaviour needs to
+     *     public float[] Predict(float[][] data, bool outputMargin = false,
+                           int nTreeLimit = 0)
      * be implemented. Only the essential parameters are actually implemented
      */
-    public Booster Train(IDictionary<string, object> parameters, DMatrix dTrain,
+    public float[] Predict(float[][] data)
+    {
+      var test = new DMatrix(data);
+      var preds = booster.Predict(test);
+      return preds.Select(v => v > 0.5f ? 1f : 0f).ToArray();
+    }
+
+    /*
+     * float[][] data, bool outputMargin = false, int nTreeLimit = 0
+     */
+    public float[][] PredictProba(float[][] data)
+    {
+      var dTest = new DMatrix(data);
+      var preds = booster.Predict(dTest);
+      return preds.Select(v => v > 0.5f ? new [] {v, 1 - v} : new[] { 1 - v, v }).ToArray();
+    }
+    
+    private Booster Train(IDictionary<string, object> args, DMatrix dTrain,
                          int numBoostRound = 10, Tuple<DMatrix, string>[] evals = null,
                          Func<string, float> obj = null, Func<float, float> fEval = null,
                          bool maximize = false, int? earlyStoppingRounds = null,
@@ -63,41 +84,9 @@ namespace XGBoost
                          bool verboseEval = true, Object learningRates = null,
                          string xgbModel = null, Object[] callbacks = null)
     {
-      Booster booster = new Booster(parameters, dTrain);
-      for (int i = 0; i < numBoostRound; i++)
-      {
-        booster.Update(dTrain, i);
-      }
-      return booster;
-    }
-
-    /*
-     * TODO: Most of these paramaters probably don't work now since their behaviour needs to
-     * be implemented. Only the essential parameters are actually implemented
-     */
-    public float[] Predict(float[][] data, bool outputMargin = false,
-                           int nTreeLimit = 0)
-    {
-      DMatrix dTest = new DMatrix(data);
-      float[] preds = booster.Predict(dTest);
-      preds = convertTo0Or1(preds);
-      return preds;
-    }
-
-    private float[] convertTo0Or1(float[] preds)
-    {
-      for (int i = 0; i < preds.Length; i++)
-      {
-        if (preds[i] > 0.5F)
-        {
-          preds[i] = 1;
-        }
-        else 
-        {
-          preds[i] = 0;
-        }
-      }
-      return preds;
+      var bst = new Booster(args, dTrain);
+      for (int i = 0; i < numBoostRound; i++) { bst.Update(dTrain, i); }
+      return bst;
     }
   }
 }

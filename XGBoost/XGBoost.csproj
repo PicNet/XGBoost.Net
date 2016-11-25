@@ -48,7 +48,7 @@
   <ItemGroup>
     <Compile Include="Booster.cs" />
     <Compile Include="DllFailException.cs" />
-    <Compile Include="DllMethods.cs" />
+    <Compile Include="XGBOOST_NATIVE_METHODS.cs" />
     <Compile Include="DMatrix.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XGBClassifier.cs" />

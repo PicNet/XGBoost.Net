@@ -22,12 +22,20 @@ namespace Demo
       xgbr.Fit(dataTrain, labelsTrain);
       float[] preds = xgbr.Predict(dataTest);
       PrintPreds(preds);
+      Console.ReadKey();
       */
-
+      /*
       XGBClassifier xgbc = new XGBClassifier();
       xgbc.Fit(dataTrain, labelsTrain);
       float[] preds = xgbc.Predict(dataTest);
       PrintPreds(preds);
+      Console.ReadKey();
+      */
+      XGBClassifier xgbc = new XGBClassifier();
+      xgbc.Fit(dataTrain, labelsTrain);
+      float[][] predsProba = xgbc.PredictProba(dataTest);
+      PrintPredsProba(predsProba);
+      Console.ReadKey();
     }
 
     static float[][] GetDataTrain()
@@ -107,7 +115,15 @@ namespace Demo
       {
         Console.Write(preds[i].ToString() + " ");
       }
-      Console.ReadKey();
+    }
+
+    static void PrintPredsProba(float[][] predsProba)
+    {
+      for (int i = 0; i < predsProba.Length; i++)
+      {
+        Console.Write(predsProba[i][0].ToString() + " " +
+                      predsProba[i][1].ToString() + " ");
+      }
     }
   }
 }

@@ -25,7 +25,7 @@ namespace XGBoost
       float[] data1D = Flatten2DArray(data);
       ulong nrows = unchecked((ulong)data.Length);
       ulong ncols = unchecked((ulong)data[0].Length);
-      int output = DllMethods.XGDMatrixCreateFromMat(data1D, nrows, ncols, Missing, out _handle);
+      int output = XGBOOST_NATIVE_METHODS.XGDMatrixCreateFromMat(data1D, nrows, ncols, Missing, out _handle);
       if (output == -1) 
         throw new DllFailException("XGDMatrixCreateFromMat() in DMatrix() failed");
 
@@ -60,7 +60,7 @@ namespace XGBoost
     {
       ulong lenULong;
       IntPtr result;
-      int output = DllMethods.XGDMatrixGetFloatInfo(_handle, field, out lenULong, out result);
+      int output = XGBOOST_NATIVE_METHODS.XGDMatrixGetFloatInfo(_handle, field, out lenULong, out result);
       if (output == -1)
         throw new DllFailException("XGDMatrixGetFloatInfo() in DMatrix.GetFloatInfo() failed");
 
@@ -82,7 +82,7 @@ namespace XGBoost
     private void SetFloatInfo(string field, float[] floatInfo)
     {
       ulong len = (ulong)floatInfo.Length;
-      int output = DllMethods.XGDMatrixSetFloatInfo(_handle, field, floatInfo, len);
+      int output = XGBOOST_NATIVE_METHODS.XGDMatrixSetFloatInfo(_handle, field, floatInfo, len);
       if (output == -1)
         throw new DllFailException("XGDMatrixSetFloatInfo() in DMatrix.SetFloatInfo() failed");
     }
@@ -99,7 +99,7 @@ namespace XGBoost
     {
       if (disposed)
         return;
-      DllMethods.XGDMatrixFree(_handle);
+      XGBOOST_NATIVE_METHODS.XGDMatrixFree(_handle);
       disposed = true;
     }
   }

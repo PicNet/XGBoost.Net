@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace XGBoost
 {
-  class DllMethods
+  public class XGBOOST_NATIVE_METHODS
   {
     [DllImport("libs/libxgboost.dll")]
     public static extern int XGDMatrixCreateFromMat(float[] data, ulong nrow, ulong ncol, 
