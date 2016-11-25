@@ -25,7 +25,7 @@ namespace XGBoostTests
             int trainCols = 4;
             int trainRows = 891;
 
-            using (TextFieldParser parser = new TextFieldParser(@"C:\dev\tests\testXgboost\simple_train.csv"))
+            using (TextFieldParser parser = new TextFieldParser("libs/train.csv"))
             {
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(",");
@@ -51,12 +51,52 @@ namespace XGBoostTests
 
         private float[] GetLabelsTrain()
         {
-            return null;
+            int trainRows = 891;
+
+            using (TextFieldParser parser = new TextFieldParser("libs/train.csv"))
+            {
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
+                float[] labelsTrain = new float[trainRows];
+                int row = 0;
+
+                while (!parser.EndOfData)
+                {
+                    string[] fields = parser.ReadFields();
+                    labelsTrain[row] = float.Parse(fields[0]);
+                    row += 1;
+                }
+
+                return labelsTrain;
+            }
         }
 
         private float[][] GetDataTest()
         {
-            return null;
+            int testCols = 3;
+            int testRows = 418;
+
+            using (TextFieldParser parser = new TextFieldParser("libs/test.csv"))
+            {
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
+                float[][] dataTest = new float[testRows][];
+                int row = 0;
+
+                while (!parser.EndOfData)
+                {
+                    dataTest[row] = new float[testCols];
+                    string[] fields = parser.ReadFields();
+
+                    for (int col = 0; col < fields.Length; col++)
+                    {
+                        dataTest[row][col] = float.Parse(fields[col]);
+                    }
+                    row += 1;
+                }
+
+                return dataTest;
+            }
         }
 
         private bool PredsCorrect(float[] preds)
