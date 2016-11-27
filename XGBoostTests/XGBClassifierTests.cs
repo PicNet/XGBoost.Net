@@ -129,7 +129,7 @@ namespace XGBoostTests
                     for (int col = 0; col < fields.Length; col++)
                     {
                         float absDiff = Math.Abs(float.Parse(fields[col]) - preds[predInd]);
-                        if (absDiff > 0.0001F)
+                        if (absDiff > 0.01F)
                         {
                             return false;
                         }
