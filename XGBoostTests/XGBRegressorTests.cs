@@ -21,6 +21,34 @@ namespace XGBoostTests
             Assert.IsTrue(PredsCorrect(preds));
         }
 
+        [TestMethod]
+        public void Parameters()
+        {
+            Assert.IsTrue(CanSetMaxDepth());
+            Assert.IsTrue(CanSetLearningRate());
+            Assert.IsTrue(CanSetNEstimators());
+            Assert.IsTrue(CanSetSilent());
+            Assert.IsTrue(CanSetObjective());
+
+            Assert.IsTrue(CanSetNThread());
+            Assert.IsTrue(CanSetGamma());
+            Assert.IsTrue(CanSetMinChildWeight());
+            Assert.IsTrue(CanSetMaxDeltaStep());
+            Assert.IsTrue(CanSetSubsample());
+            Assert.IsTrue(CanSetColSampleByTree());
+            Assert.IsTrue(CanSetColSampleByLevel());
+            Assert.IsTrue(CanSetRegAlpha());
+            Assert.IsTrue(CanSetRegLambda());
+            Assert.IsTrue(CanSetScalePosWeight());
+
+            Assert.IsTrue(CanSetBaseScore());
+            Assert.IsTrue(CanSetSeed());
+            Assert.IsTrue(CanSetMissing());
+        }
+
+        // CanSet() true = can set, false = can't set
+        // Different() true = different by enough, false = not different enough
+
         private float[][] GetDataTrain()
         {
             int trainCols = 4;
@@ -118,7 +146,7 @@ namespace XGBoostTests
                         float absDiff = Math.Abs(float.Parse(fields[col]) - preds[predInd]);
                         if (absDiff > 0.01F)
                         {
-                            // TODO: figure out why it fails for only one line and change this to just return false
+                            // TODO: figure out why it fails for only one line and remove the if
                             if (row != 152)
                             {
                                 return false;
@@ -130,6 +158,103 @@ namespace XGBoostTests
                 }
             }
             return true; // we haven't returned from a wrong prediction so everything is right
+        }
+
+        private bool CanSetMaxDepth()
+        {
+            float[][] dataTrain = GetDataTrain();
+            float[] labelsTrain = GetLabelsTrain();
+            float[][] dataTest = GetDataTest();
+
+            XGBRegressor xgbr = new XGBRegressor();
+            xgbr.Fit(dataTrain, labelsTrain);
+            float[] preds = xgbr.Predict(dataTest);
+            return true;
+        }
+
+        private bool CanSetLearningRate()
+        {
+            return true;
+        }
+
+        private bool CanSetNEstimators()
+        {
+            return true;
+        }
+
+        private bool CanSetSilent()
+        {
+            return true;
+        }
+
+        private bool CanSetObjective()
+        {
+            return true;
+        }
+
+        private bool CanSetNThread()
+        {
+            return true;
+        }
+
+        private bool CanSetGamma()
+        {
+            return true;
+        }
+
+        private bool CanSetMinChildWeight()
+        {
+            return true;
+        }
+
+        private bool CanSetMaxDeltaStep()
+        {
+            return true;
+        }
+
+        private bool CanSetSubsample()
+        {
+            return true;
+        }
+
+        private bool CanSetColSampleByTree()
+        {
+            return true;
+        }
+
+        private bool CanSetColSampleByLevel()
+        {
+            return true;
+        }
+
+        private bool CanSetRegAlpha()
+        {
+            return true;
+        }
+
+        private bool CanSetRegLambda()
+        {
+            return true;
+        }
+
+        private bool CanSetScalePosWeight()
+        {
+            return true;
+        }
+
+        private bool CanSetBaseScore()
+        {
+            return true;
+        }
+
+        private bool CanSetSeed()
+        {
+            return true;
+        }
+
+        private bool CanSetMissing()
+        {
+            return true;
         }
     }
 }

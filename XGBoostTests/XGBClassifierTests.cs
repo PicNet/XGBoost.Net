@@ -158,7 +158,7 @@ namespace XGBoostTests
                         float absDiff = Math.Abs(float.Parse(fields[col]) - preds[row][col]);
                         if (absDiff > 0.0001F)
                         {
-                            // TODO: figure out why it fails for only one line and change this to just return false
+                            // TODO: figure out why it fails for only one line and remove the if
                             if (row != 152)
                             {
                                 return false;
