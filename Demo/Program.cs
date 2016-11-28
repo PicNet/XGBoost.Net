@@ -38,7 +38,7 @@ namespace Demo
 
     static float[][] GetDataTrain()
     {
-      using (TextFieldParser parser = new TextFieldParser("libs/simple_train.csv"))
+      using (TextFieldParser parser = new TextFieldParser("lib/simple_train.csv"))
       {
         parser.TextFieldType = FieldType.Delimited;
         parser.SetDelimiters(",");
@@ -64,7 +64,7 @@ namespace Demo
 
     static float[] GetLabelsTrain()
     {
-      using (TextFieldParser parser = new TextFieldParser("libs/simple_train.csv"))
+      using (TextFieldParser parser = new TextFieldParser("lib/simple_train.csv"))
       {
         parser.TextFieldType = FieldType.Delimited;
         parser.SetDelimiters(",");
@@ -84,7 +84,7 @@ namespace Demo
 
     static float[][] GetDataTest()
     {
-      using (TextFieldParser parser = new TextFieldParser("libs/simple_test.csv"))
+      using (TextFieldParser parser = new TextFieldParser("lib/simple_test.csv"))
       {
         parser.TextFieldType = FieldType.Delimited;
         parser.SetDelimiters(",");
