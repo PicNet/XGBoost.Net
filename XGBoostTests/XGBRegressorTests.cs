@@ -92,18 +92,17 @@ namespace XGBoostTests
             preds = xgbr.Predict(dataTest);
             Console.WriteLine(preds[0]);
 
-            // TODO fix this
-           // Console.WriteLine("colsample_bytree");
-            //xgbr = new XGBRegressor(colSampleByTree: 10);
-            //xgbr.Fit(dataTrain, labelsTrain);
-            //preds = xgbr.Predict(dataTest);
-            //Console.WriteLine(preds[0]);
+            Console.WriteLine("colsample_bytree");
+            xgbr = new XGBRegressor(colSampleByTree: 0.9F);
+            xgbr.Fit(dataTrain, labelsTrain);
+            preds = xgbr.Predict(dataTest);
+            Console.WriteLine(preds[0]);
 
-            //Console.WriteLine("colsample_bylevel");
-            //xgbr = new XGBRegressor(colSampleByLevel: 0.01F);
-            //xgbr.Fit(dataTrain, labelsTrain);
-            //preds = xgbr.Predict(dataTest);
-            //Console.WriteLine(preds[0]);
+            Console.WriteLine("colsample_bylevel");
+            xgbr = new XGBRegressor(colSampleByLevel: 1.0F);
+            xgbr.Fit(dataTrain, labelsTrain);
+            preds = xgbr.Predict(dataTest);
+            Console.WriteLine(preds[0]);
 
             Console.WriteLine("reg_alpha");
             xgbr = new XGBRegressor(regAlpha: 1);
