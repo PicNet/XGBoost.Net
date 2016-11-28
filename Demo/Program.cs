@@ -16,28 +16,24 @@ namespace Demo
       float[][] dataTrain = GetDataTrain();
       float[] labelsTrain = GetLabelsTrain();
       float[][] dataTest = GetDataTest();
-
       
       XGBRegressor xgbr = new XGBRegressor();
       xgbr.Fit(dataTrain, labelsTrain);
       float[] preds = xgbr.Predict(dataTest);
       PrintPreds(preds);
-      Console.ReadKey();
+      Console.WriteLine();
       
-      /*
       XGBClassifier xgbc = new XGBClassifier();
       xgbc.Fit(dataTrain, labelsTrain);
-      float[] preds = xgbc.Predict(dataTest);
+      preds = xgbc.Predict(dataTest);
       PrintPreds(preds);
-      Console.ReadKey();
-      */
-      /*
-      XGBClassifier xgbc = new XGBClassifier();
+      Console.WriteLine();
+      
+      xgbc = new XGBClassifier();
       xgbc.Fit(dataTrain, labelsTrain);
       float[][] predsProba = xgbc.PredictProba(dataTest);
       PrintPredsProba(predsProba);
       Console.ReadKey();
-      */
     }
 
     static float[][] GetDataTrain()
