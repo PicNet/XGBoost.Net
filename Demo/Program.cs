@@ -38,7 +38,7 @@ namespace Demo
 
     static float[][] GetDataTrain()
     {
-      using (TextFieldParser parser = new TextFieldParser(@"C:\dev\tests\testXgboost\simple_train.csv"))
+      using (TextFieldParser parser = new TextFieldParser("libs/simple_train.csv"))
       {
         parser.TextFieldType = FieldType.Delimited;
         parser.SetDelimiters(",");
@@ -64,7 +64,7 @@ namespace Demo
 
     static float[] GetLabelsTrain()
     {
-      using (TextFieldParser parser = new TextFieldParser(@"C:\dev\tests\testXgboost\simple_train.csv"))
+      using (TextFieldParser parser = new TextFieldParser("libs/simple_train.csv"))
       {
         parser.TextFieldType = FieldType.Delimited;
         parser.SetDelimiters(",");
@@ -84,7 +84,7 @@ namespace Demo
 
     static float[][] GetDataTest()
     {
-      using (TextFieldParser parser = new TextFieldParser(@"C:\dev\tests\testXgboost\simple_test.csv"))
+      using (TextFieldParser parser = new TextFieldParser("libs/simple_test.csv"))
       {
         parser.TextFieldType = FieldType.Delimited;
         parser.SetDelimiters(",");
@@ -113,6 +113,7 @@ namespace Demo
       {
         Console.Write(preds[i].ToString() + " ");
       }
+      Console.WriteLine();
     }
 
     static void PrintPredsProba(float[][] predsProba)
@@ -122,6 +123,7 @@ namespace Demo
         Console.Write(predsProba[i][0].ToString() + " " +
                       predsProba[i][1].ToString() + " ");
       }
+      Console.WriteLine();
     }
   }
 }
