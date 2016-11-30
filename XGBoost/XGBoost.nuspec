@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>PicNet.XGBoost</id>
-    <version>0.0.1</version>
+    <version>0.0.2.1</version>
     <title>XGBoost.Net</title>
     <authors>Adam Dobrzycki</authors>
     <owners>Guido Tapia, Adam Dobrzycki</owners>
@@ -11,7 +11,7 @@
     <iconUrl>http://www.picnet.com.au/wp-content/uploads/2015/01/logo-dark.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>.Net wrapper for the XGBoost machine learning library.</description>
-    <releaseNotes>intial release</releaseNotes>
+    <releaseNotes>test dll dependency fix</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>machine learning xgboost boosted tree</tags>
   </metadata>
