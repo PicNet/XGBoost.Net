@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>PicNet.XGBoost</id>
-    <version>0.0.7</version>
+    <version>0.0.8</version>
     <title>XGBoost.Net</title>
     <authors>Adam Dobrzycki</authors>
     <owners>Guido Tapia, Adam Dobrzycki</owners>

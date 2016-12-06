@@ -7,8 +7,8 @@ namespace XGBoost
   {
     // use first dllLocation for development
     // use second dllLocation for publishing (making sure it refers to correct next version of package)
-    private const string dllLocation = "libxgboost.dll";
-    //private const string dllLocation = "../../../packages/PicNet.XGBoost.0.0.7/lib/libxgboost.dll";
+    //private const string dllLocation = "libxgboost.dll";
+    private const string dllLocation = "../../../packages/PicNet.XGBoost.0.0.8/lib/libxgboost.dll";
 
     [DllImport(dllLocation)]
     public static extern string XGBGetLastError();
