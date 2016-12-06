@@ -60,7 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XGBoost\XGBoost.csproj">
-      <Project>{4b1eafee-4891-4c8b-95dd-97ebc59291df}</Project>
+      <Project>{9d9700fa-c60e-465f-853e-d8cda3e015c0}</Project>
       <Name>XGBoost</Name>
     </ProjectReference>
   </ItemGroup>

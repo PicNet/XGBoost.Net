@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>PicNet.XGBoost</id>
-    <version>0.0.2.1</version>
+    <version>0.0.7</version>
     <title>XGBoost.Net</title>
     <authors>Adam Dobrzycki</authors>
     <owners>Guido Tapia, Adam Dobrzycki</owners>
@@ -10,9 +10,13 @@
     <projectUrl>https://github.com/PicNet/XGBoost.Net</projectUrl>
     <iconUrl>http://www.picnet.com.au/wp-content/uploads/2015/01/logo-dark.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>.Net wrapper for the XGBoost machine learning library.</description>
-    <releaseNotes>test dll dependency fix</releaseNotes>
+    <description>.Net wrapper for the XGBoost machine learning library. Targeted for x64 and supports .Net Framework versions 4.0 and above.</description>
+    <releaseNotes>Initial Relase</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>machine learning xgboost boosted tree</tags>
   </metadata>
+  <files>
+    <file src="bin/Debug/XGBoost.dll" target="lib" />
+    <file src="lib/libxgboost.dll" target="lib" />
+  </files>
 </package>

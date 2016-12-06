@@ -17,7 +17,7 @@ namespace XGBoost
       var dmats = new [] { train.Handle };
       var len = unchecked((ulong)dmats.Length);
       var output = XGBOOST_NATIVE_METHODS.XGBoosterCreate(dmats, len, out handle);
-      if (output == -1) throw new DllFailException("XGBoosterCreate() in Booster() failed");
+      if (output == -1) throw new DllFailException(XGBOOST_NATIVE_METHODS.XGBGetLastError());
       
       SetParameters(parameters);
     }
@@ -25,7 +25,7 @@ namespace XGBoost
     public void Update(DMatrix train, int iter)
     {
       var output = XGBOOST_NATIVE_METHODS.XGBoosterUpdateOneIter(Handle, iter, train.Handle);
-      if (output == -1) throw new DllFailException("XGBoosterUpdateOneIter() in Booster.Update() failed");
+      if (output == -1) throw new DllFailException(XGBOOST_NATIVE_METHODS.XGBGetLastError());
     }
 
     public float[] Predict(DMatrix test)
@@ -34,7 +34,7 @@ namespace XGBoost
       IntPtr predsPtr;
       var output = XGBOOST_NATIVE_METHODS.XGBoosterPredict(
           handle, test.Handle, normalPrediction, 0, out predsLen, out predsPtr);
-      if (output == -1) throw new DllFailException("XGBoosterPredict() in Booster.Predict() failed");
+      if (output == -1) throw new DllFailException(XGBOOST_NATIVE_METHODS.XGBGetLastError());
       return GetPredictionsArray(predsPtr, predsLen);
     }
 
@@ -105,7 +105,7 @@ namespace XGBoost
     public void SetParameter(string name, string val)
     {
       int output = XGBOOST_NATIVE_METHODS.XGBoosterSetParam(handle, name, val);
-      if (output == -1) throw new DllFailException("XGBoosterSetParam() in Booster.SetParameter() failed");
+      if (output == -1) throw new DllFailException(XGBOOST_NATIVE_METHODS.XGBGetLastError());
     }
 
     // Dispose pattern from MSDN documentation

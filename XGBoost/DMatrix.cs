@@ -27,7 +27,7 @@ namespace XGBoost
       ulong ncols = unchecked((ulong)data[0].Length);
       int output = XGBOOST_NATIVE_METHODS.XGDMatrixCreateFromMat(data1D, nrows, ncols, Missing, out _handle);
       if (output == -1) 
-        throw new DllFailException("XGDMatrixCreateFromMat() in DMatrix() failed");
+        throw new DllFailException(XGBOOST_NATIVE_METHODS.XGBGetLastError());
 
       if (labels != null)
       {
@@ -62,7 +62,7 @@ namespace XGBoost
       IntPtr result;
       int output = XGBOOST_NATIVE_METHODS.XGDMatrixGetFloatInfo(_handle, field, out lenULong, out result);
       if (output == -1)
-        throw new DllFailException("XGDMatrixGetFloatInfo() in DMatrix.GetFloatInfo() failed");
+        throw new DllFailException(XGBOOST_NATIVE_METHODS.XGBGetLastError());
 
       int len = unchecked((int)lenULong);
       float[] floatInfo = new float[len];
@@ -84,7 +84,7 @@ namespace XGBoost
       ulong len = (ulong)floatInfo.Length;
       int output = XGBOOST_NATIVE_METHODS.XGDMatrixSetFloatInfo(_handle, field, floatInfo, len);
       if (output == -1)
-        throw new DllFailException("XGDMatrixSetFloatInfo() in DMatrix.SetFloatInfo() failed");
+        throw new DllFailException(XGBOOST_NATIVE_METHODS.XGBGetLastError());
     }
 
     // Dispose pattern from MSDN documentation
