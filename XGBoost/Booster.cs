@@ -22,14 +22,23 @@ namespace XGBoost
       
       SetParameters(parameters);
     }
-    public Booster(string fileName, int silent = 1)
-        {
-            IntPtr tempPtr;
-            var newBooster = XGBOOST_NATIVE_METHODS.XGBoosterCreate(null, 0,out tempPtr); 
-            var output = XGBOOST_NATIVE_METHODS.XGBoosterLoadModel(tempPtr, fileName);
-            if (output == -1) throw new DllFailException(XGBOOST_NATIVE_METHODS.XGBGetLastError());
-            handle = tempPtr;
-        }
+
+    public Booster(DMatrix train)
+    {
+        var dmats = new[] { train.Handle };
+        var len = unchecked((ulong)dmats.Length);
+        var output = XGBOOST_NATIVE_METHODS.XGBoosterCreate(dmats, len, out handle);
+        if (output == -1) throw new DllFailException(XGBOOST_NATIVE_METHODS.XGBGetLastError());
+    }
+
+        public Booster(string fileName, int silent = 1)
+    {
+        IntPtr tempPtr;
+        var newBooster = XGBOOST_NATIVE_METHODS.XGBoosterCreate(null, 0,out tempPtr); 
+        var output = XGBOOST_NATIVE_METHODS.XGBoosterLoadModel(tempPtr, fileName);
+        if (output == -1) throw new DllFailException(XGBOOST_NATIVE_METHODS.XGBGetLastError());
+        handle = tempPtr;
+    }
 
     public void Update(DMatrix train, int iter)
     {
@@ -73,29 +82,7 @@ namespace XGBoost
       SetParameter("n_estimators", ((int)parameters["n_estimators"]).ToString());
       SetParameter("silent", ((bool)parameters["silent"]).ToString());
       SetParameter("objective", (string)parameters["objective"]);
-        public string[] GetModelDumpArray(IntPtr predsPtr, int predsLen)
-        {
-            var length = unchecked((int)predsLen);
-            var preds = new string[length];
-            for (var i = 0; i < length; i++)
-            {
-                var floatBytes = new byte[4];
-                for (var b = 0; b < 4; b++)
-                {
-                    floatBytes[b] = Marshal.ReadByte(predsPtr, 4 * i + b);
-                }
-                preds[i] = BitConverter.ToString(floatBytes, 0);
-            }
-            return preds;
-        }
-
-        public void SetParameters(IDictionary<string, Object> parameters)
-    {
-            foreach(var param in parameters)
-            {
-                if(param.Value != null)
-                    SetParameter(param.Key, param.Value.ToString());
-            }
+        
       SetParameter("nthread", ((int)parameters["nthread"]).ToString());
       SetParameter("gamma", ((float)parameters["gamma"]).ToString(nfi));
       SetParameter("min_child_weight", ((int)parameters["min_child_weight"]).ToString());
@@ -110,6 +97,31 @@ namespace XGBoost
       SetParameter("base_score", ((float)parameters["base_score"]).ToString(nfi));
       SetParameter("seed", ((int)parameters["seed"]).ToString());
       SetParameter("missing", ((float)parameters["missing"]).ToString(nfi));
+    }
+
+    public void SetParametersGeneric(IDictionary<string, Object> parameters)
+    {
+        foreach (var param in parameters)
+        {
+            if (param.Value != null)
+                SetParameter(param.Key, param.Value.ToString());
+        }
+    }
+
+    public string[] GetModelDumpArray(IntPtr predsPtr, int predsLen)
+    {
+        var length = unchecked((int)predsLen);
+        var preds = new string[length];
+        for (var i = 0; i < length; i++)
+        {
+            var floatBytes = new byte[4];
+            for (var b = 0; b < 4; b++)
+            {
+                floatBytes[b] = Marshal.ReadByte(predsPtr, 4 * i + b);
+            }
+            preds[i] = BitConverter.ToString(floatBytes, 0);
+        }
+        return preds;
     }
 
     public void PrintParameters(IDictionary<string, Object> parameters)
