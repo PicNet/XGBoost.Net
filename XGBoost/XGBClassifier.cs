@@ -98,21 +98,60 @@ namespace XGBoost
       parameters["_Booster"] = null;
     }
 
-    /// <summary>
-    ///   Fit the gradient boosting model
-    /// </summary>
-    /// <param name="data">
-    ///   Feature matrix
-    /// </param>
-    /// <param name="labels">
-    ///   Labels
-    /// </param>
-    public void Fit(float[][] data, float[] labels)
+
+    public XGBClassifier(IDictionary<string, object> p_parameters)
+    {
+        parameters = p_parameters;
+    }
+
+        /// <summary>
+        ///   Fit the gradient boosting model
+        /// </summary>
+        /// <param name="data">
+        ///   Feature matrix
+        /// </param>
+        /// <param name="labels">
+        ///   Labels
+        /// </param>
+        public void Fit(float[][] data, float[] labels)
     {
       var train = new DMatrix(data, labels);
       booster = Train(parameters, train, ((int)parameters["n_estimators"]));
     }
-    
+
+    public void Fit(float[][] data, float[] labels, IDictionary<string, object> p_parameters)
+    {
+        var train = new DMatrix(data, labels);
+        booster = Train(parameters, train, ((int)parameters["n_estimators"]),p_parameters);
+    }
+
+    public static Dictionary<string, object> GetDefaultParameters()
+    {
+
+        var defaultParameters = new Dictionary<string, object>();
+        defaultParameters["max_depth"] = 3;
+        defaultParameters["learning_rate"] = 0.1f;
+        defaultParameters["n_estimators"] = 100;
+        defaultParameters["silent"] = true;
+        defaultParameters["objective"] = "binary:logistic";
+        defaultParameters["nthread"] = -1;
+        defaultParameters["gamma"] = 0;
+        defaultParameters["min_child_weight"] = 1;
+        defaultParameters["max_delta_step"] = 0;
+        defaultParameters["subsample"] = 1;
+        defaultParameters["colsample_bytree"] = 1;
+        defaultParameters["colsample_bylevel"] = 1;
+        defaultParameters["reg_alpha"] = 0;
+        defaultParameters["reg_lambda"] = 1;
+        defaultParameters["scale_pos_weight"] = 1;
+        defaultParameters["base_score"] = 0.5f;
+        defaultParameters["seed"] = 0;
+        defaultParameters["missing"] = float.NaN;
+        defaultParameters["_Booster"] = null;
+
+        return defaultParameters;
+    }
+
     public void SetParameter(string parameterName, object parameterValue)
         {
           parameters[parameterName] = parameterValue;
@@ -130,10 +169,14 @@ namespace XGBoost
     public float[] Predict(float[][] data)
     {
       var test = new DMatrix(data);
-      return booster.Predict(test);
-      //return preds.Select(v => v > 0.5f ? 1f : 0f).ToArray();
+      return booster.Predict(test).Select(v => v > 0.5f ? 1f : 0f).ToArray();
     }
 
+    public float[] PredictRaw(float[][] data)
+    {
+      var test = new DMatrix(data);
+      return booster.Predict(test);
+    }
     /// <summary>
     ///   Predict using the gradient boosted model
     /// </summary>
@@ -168,14 +211,19 @@ namespace XGBoost
         return booster.DumpModelEx(fmap, with_stats,format);
     }
 
-
-        
-
     private Booster Train(IDictionary<string, object> args, DMatrix dTrain, int numBoostRound = 10)
     {
       var bst = new Booster(args, dTrain);
       for (int i = 0; i < numBoostRound; i++) { bst.Update(dTrain, i); }
       return bst;
+    }
+
+    private Booster Train(IDictionary<string, object> args, DMatrix dTrain, int numBoostRound = 10, IDictionary<string, object> p_parameters = null)
+    {
+        var bst = new Booster(dTrain);
+        bst.SetParametersGeneric(parameters);
+        for (int i = 0; i < numBoostRound; i++) { bst.Update(dTrain, i); }
+        return bst;
     }
   }
 }
