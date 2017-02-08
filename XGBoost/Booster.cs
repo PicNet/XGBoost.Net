@@ -21,6 +21,14 @@ namespace XGBoost
       
       SetParameters(parameters);
     }
+    public Booster(string fileName, int silent = 1)
+        {
+            IntPtr tempPtr;
+            var newBooster = XGBOOST_NATIVE_METHODS.XGBoosterCreate(null, 0,out tempPtr); 
+            var output = XGBOOST_NATIVE_METHODS.XGBoosterLoadModel(tempPtr, fileName);
+            if (output == -1) throw new DllFailException(XGBOOST_NATIVE_METHODS.XGBGetLastError());
+            handle = tempPtr;
+        }
 
     public void Update(DMatrix train, int iter)
     {
@@ -54,28 +62,29 @@ namespace XGBoost
       return preds;
     }
 
-    public void SetParameters(IDictionary<string, Object> parameters)
+        public string[] GetModelDumpArray(IntPtr predsPtr, int predsLen)
+        {
+            var length = unchecked((int)predsLen);
+            var preds = new string[length];
+            for (var i = 0; i < length; i++)
+            {
+                var floatBytes = new byte[4];
+                for (var b = 0; b < 4; b++)
+                {
+                    floatBytes[b] = Marshal.ReadByte(predsPtr, 4 * i + b);
+                }
+                preds[i] = BitConverter.ToString(floatBytes, 0);
+            }
+            return preds;
+        }
+
+        public void SetParameters(IDictionary<string, Object> parameters)
     {
-      SetParameter("max_depth", ((int)parameters["max_depth"]).ToString());
-      SetParameter("learning_rate", ((float)parameters["learning_rate"]).ToString());
-      SetParameter("n_estimators", ((int)parameters["n_estimators"]).ToString());
-      SetParameter("silent", ((bool)parameters["silent"]).ToString());
-      SetParameter("objective", (string)parameters["objective"]);
-
-      SetParameter("nthread", ((int)parameters["nthread"]).ToString());
-      SetParameter("gamma", ((float)parameters["gamma"]).ToString());
-      SetParameter("min_child_weight", ((int)parameters["min_child_weight"]).ToString());
-      SetParameter("max_delta_step", ((int)parameters["max_delta_step"]).ToString());
-      SetParameter("subsample", ((float)parameters["subsample"]).ToString());
-      SetParameter("colsample_bytree", ((float)parameters["colsample_bytree"]).ToString());
-      SetParameter("colsample_bylevel", ((float)parameters["colsample_bylevel"]).ToString());
-      SetParameter("reg_alpha", ((float)parameters["reg_alpha"]).ToString());
-      SetParameter("reg_lambda", ((float)parameters["reg_lambda"]).ToString());
-      SetParameter("scale_pos_weight", ((float)parameters["scale_pos_weight"]).ToString());
-
-      SetParameter("base_score", ((float)parameters["base_score"]).ToString());
-      SetParameter("seed", ((int)parameters["seed"]).ToString());
-      SetParameter("missing", ((float)parameters["missing"]).ToString());
+            foreach(var param in parameters)
+            {
+                if(param.Value != null)
+                    SetParameter(param.Key, param.Value.ToString());
+            }
     }
 
     public void PrintParameters(IDictionary<string, Object> parameters)
@@ -108,8 +117,32 @@ namespace XGBoost
       if (output == -1) throw new DllFailException(XGBOOST_NATIVE_METHODS.XGBGetLastError());
     }
 
-    // Dispose pattern from MSDN documentation
-    public void Dispose()
+    public void Save(string fileName)
+    {
+        XGBOOST_NATIVE_METHODS.XGBoosterSaveModel(handle, fileName);
+    }
+
+        public string[] DumpModelEx(string fmap,
+                                 int with_stats,
+                                 string format)
+        {
+
+            int length;
+            IntPtr dumpPtr;
+            string[] dumpStr;
+            string dumbStrSingle;
+
+            //XGBOOST_NATIVE_METHODS.XGBoosterDumpModelEx(handle,fmap,with_stats,format, out  length, out dumbStrSingle);
+            //return new string[] { dumbStrSingle };
+            //XGBOOST_NATIVE_METHODS.XGBoosterDumpModel(handle,fmap,with_stats,out length, out dumpStr);
+            XGBOOST_NATIVE_METHODS.XGBoosterDumpModelEx(handle,fmap,with_stats,format, out  length, out dumpPtr);
+
+            //return dumpStr;
+            return GetModelDumpArray(dumpPtr, length);
+        }
+
+        // Dispose pattern from MSDN documentation
+        public void Dispose()
     {
       Dispose(true);
       GC.SuppressFinalize(this);

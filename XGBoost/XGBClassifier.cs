@@ -73,7 +73,7 @@ namespace XGBoost
                     int maxDeltaStep = 0, float subsample = 1, float colSampleByTree = 1,
                     float colSampleByLevel = 1, float regAlpha = 0, float regLambda = 1,
                     float scalePosWeight = 1, float baseScore = 0.5F, int seed = 0,
-                    float missing = float.NaN)
+                    float missing = float.NaN, float numClass=0)
     {
       parameters["max_depth"] = maxDepth;
       parameters["learning_rate"] = learningRate;
@@ -112,6 +112,11 @@ namespace XGBoost
       var train = new DMatrix(data, labels);
       booster = Train(parameters, train, ((int)parameters["n_estimators"]));
     }
+    
+    public void SetParameter(string parameterName, object parameterValue)
+        {
+          parameters[parameterName] = parameterValue;
+        }
 
     /// <summary>
     ///   Predict using the gradient boosted model
@@ -125,8 +130,8 @@ namespace XGBoost
     public float[] Predict(float[][] data)
     {
       var test = new DMatrix(data);
-      var preds = booster.Predict(test);
-      return preds.Select(v => v > 0.5f ? 1f : 0f).ToArray();
+      return booster.Predict(test);
+      //return preds.Select(v => v > 0.5f ? 1f : 0f).ToArray();
     }
 
     /// <summary>
@@ -146,6 +151,26 @@ namespace XGBoost
       return preds.Select(v => new[] { 1 - v, v } ).ToArray();
     }
     
+    public void SaveModelToFile(string fileName)
+    {
+        booster.Save(fileName);
+    }
+
+    public void LoadModelFromFile(string fileName)
+    {
+        booster = new Booster(fileName);
+    }
+
+    public string[] DumpModelEx(string fmap = "",
+                                 int with_stats = 0,
+                                 string format = "json")
+    {
+        return booster.DumpModelEx(fmap, with_stats,format);
+    }
+
+
+        
+
     private Booster Train(IDictionary<string, object> args, DMatrix dTrain, int numBoostRound = 10)
     {
       var bst = new Booster(args, dTrain);
