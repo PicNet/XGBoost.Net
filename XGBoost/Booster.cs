@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace XGBoost
 {
@@ -62,6 +63,16 @@ namespace XGBoost
       return preds;
     }
 
+    public void SetParameters(IDictionary<string, Object> parameters)
+    {
+      // support internationalisation i.e. support floats with commas (e.g. 0,5F)
+      var nfi = new NumberFormatInfo { NumberDecimalSeparator = "." };
+
+      SetParameter("max_depth", ((int)parameters["max_depth"]).ToString());
+      SetParameter("learning_rate", ((float)parameters["learning_rate"]).ToString(nfi));
+      SetParameter("n_estimators", ((int)parameters["n_estimators"]).ToString());
+      SetParameter("silent", ((bool)parameters["silent"]).ToString());
+      SetParameter("objective", (string)parameters["objective"]);
         public string[] GetModelDumpArray(IntPtr predsPtr, int predsLen)
         {
             var length = unchecked((int)predsLen);
@@ -85,6 +96,20 @@ namespace XGBoost
                 if(param.Value != null)
                     SetParameter(param.Key, param.Value.ToString());
             }
+      SetParameter("nthread", ((int)parameters["nthread"]).ToString());
+      SetParameter("gamma", ((float)parameters["gamma"]).ToString(nfi));
+      SetParameter("min_child_weight", ((int)parameters["min_child_weight"]).ToString());
+      SetParameter("max_delta_step", ((int)parameters["max_delta_step"]).ToString());
+      SetParameter("subsample", ((float)parameters["subsample"]).ToString(nfi));
+      SetParameter("colsample_bytree", ((float)parameters["colsample_bytree"]).ToString(nfi));
+      SetParameter("colsample_bylevel", ((float)parameters["colsample_bylevel"]).ToString(nfi));
+      SetParameter("reg_alpha", ((float)parameters["reg_alpha"]).ToString(nfi));
+      SetParameter("reg_lambda", ((float)parameters["reg_lambda"]).ToString(nfi));
+      SetParameter("scale_pos_weight", ((float)parameters["scale_pos_weight"]).ToString(nfi));
+
+      SetParameter("base_score", ((float)parameters["base_score"]).ToString(nfi));
+      SetParameter("seed", ((int)parameters["seed"]).ToString());
+      SetParameter("missing", ((float)parameters["missing"]).ToString(nfi));
     }
 
     public void PrintParameters(IDictionary<string, Object> parameters)
