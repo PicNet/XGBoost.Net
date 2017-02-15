@@ -31,7 +31,7 @@ namespace XGBoost
         if (output == -1) throw new DllFailException(XGBOOST_NATIVE_METHODS.XGBGetLastError());
     }
 
-        public Booster(string fileName, int silent = 1)
+    public Booster(string fileName, int silent = 1)
     {
         IntPtr tempPtr;
         var newBooster = XGBOOST_NATIVE_METHODS.XGBoosterCreate(null, 0,out tempPtr); 
@@ -159,27 +159,16 @@ namespace XGBoost
         XGBOOST_NATIVE_METHODS.XGBoosterSaveModel(handle, fileName);
     }
 
-        public string[] DumpModelEx(string fmap,
-                                 int with_stats,
-                                 string format)
-        {
+    public string[] DumpModelEx(string fmap, int with_stats, string format)
+    {
+        int length;
+        IntPtr dumpPtr;
+        XGBOOST_NATIVE_METHODS.XGBoosterDumpModelEx(handle,fmap,with_stats,format, out  length, out dumpPtr);
+        return GetModelDumpArray(dumpPtr, length);
+    }
 
-            int length;
-            IntPtr dumpPtr;
-            string[] dumpStr;
-            string dumbStrSingle;
-
-            //XGBOOST_NATIVE_METHODS.XGBoosterDumpModelEx(handle,fmap,with_stats,format, out  length, out dumbStrSingle);
-            //return new string[] { dumbStrSingle };
-            //XGBOOST_NATIVE_METHODS.XGBoosterDumpModel(handle,fmap,with_stats,out length, out dumpStr);
-            XGBOOST_NATIVE_METHODS.XGBoosterDumpModelEx(handle,fmap,with_stats,format, out  length, out dumpPtr);
-
-            //return dumpStr;
-            return GetModelDumpArray(dumpPtr, length);
-        }
-
-        // Dispose pattern from MSDN documentation
-        public void Dispose()
+    // Dispose pattern from MSDN documentation
+    public void Dispose()
     {
       Dispose(true);
       GC.SuppressFinalize(this);
