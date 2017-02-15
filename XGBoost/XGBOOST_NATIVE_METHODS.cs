@@ -58,28 +58,13 @@ namespace XGBoost
     public static extern int XGDMatrixCreateFromFile(string fname, int silent, out IntPtr DMtrxHandle);
 
 
-        [DllImport(dllLocation)]
-        public static extern int XGBoosterDumpModelEx(IntPtr handle,
-                                     string fmap,
-                                     int with_stats,
-                                     string format,
-                                     out int out_len,
-                                     out IntPtr dumpPtr);
-        [DllImport(dllLocation)]
-        public static extern int XGBoosterDumpModel(IntPtr handle,
-                              string fmap,
-                              int with_stats,
-                              out int out_len,
-                              out string[] dumpStr);
-
-
-
-        //[DllImport(dllLocation)]
-        //public static extern int XGBoosterDumpModelEx(IntPtr handle,
-        //                        string fmap,
-        //                        int with_stats,
-        //                        string format,
-        //                        out int out_len,
-        //                        out string dumpStr);
-    }
+    [DllImport(dllLocation)]
+    public static extern int XGBoosterDumpModelEx(IntPtr handle, string fmap,
+                                                  int with_stats, string format,
+                                                  out int out_len, out IntPtr dumpPtr);
+    [DllImport(dllLocation)]
+    public static extern int XGBoosterDumpModel(IntPtr handle, string fmap,
+                                                int with_stats, out int out_len,
+                                                out string[] dumpStr);
+  }
 }

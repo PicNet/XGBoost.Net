@@ -99,29 +99,30 @@ namespace XGBoost
       SetParameter("missing", ((float)parameters["missing"]).ToString(nfi));
     }
 
+    // doesn't support floats with commas (e.g. 0,5F)
     public void SetParametersGeneric(IDictionary<string, Object> parameters)
     {
-        foreach (var param in parameters)
-        {
-            if (param.Value != null)
-                SetParameter(param.Key, param.Value.ToString());
-        }
+      foreach (var param in parameters)
+      {
+        if (param.Value != null)
+          SetParameter(param.Key, param.Value.ToString());
+      }
     }
 
     public string[] GetModelDumpArray(IntPtr predsPtr, int predsLen)
     {
-        var length = unchecked((int)predsLen);
-        var preds = new string[length];
-        for (var i = 0; i < length; i++)
+      var length = unchecked((int)predsLen);
+      var preds = new string[length];
+      for (var i = 0; i < length; i++)
+      {
+        var floatBytes = new byte[4];
+        for (var b = 0; b < 4; b++)
         {
-            var floatBytes = new byte[4];
-            for (var b = 0; b < 4; b++)
-            {
-                floatBytes[b] = Marshal.ReadByte(predsPtr, 4 * i + b);
-            }
-            preds[i] = BitConverter.ToString(floatBytes, 0);
+          floatBytes[b] = Marshal.ReadByte(predsPtr, 4 * i + b);
         }
-        return preds;
+        preds[i] = BitConverter.ToString(floatBytes, 0);
+      }
+      return preds;
     }
 
     public void PrintParameters(IDictionary<string, Object> parameters)
@@ -156,15 +157,15 @@ namespace XGBoost
 
     public void Save(string fileName)
     {
-        XGBOOST_NATIVE_METHODS.XGBoosterSaveModel(handle, fileName);
+      XGBOOST_NATIVE_METHODS.XGBoosterSaveModel(handle, fileName);
     }
 
     public string[] DumpModelEx(string fmap, int with_stats, string format)
     {
-        int length;
-        IntPtr dumpPtr;
-        XGBOOST_NATIVE_METHODS.XGBoosterDumpModelEx(handle,fmap,with_stats,format, out  length, out dumpPtr);
-        return GetModelDumpArray(dumpPtr, length);
+      int length;
+      IntPtr dumpPtr;
+      XGBOOST_NATIVE_METHODS.XGBoosterDumpModelEx(handle, fmap,with_stats, format, out length, out dumpPtr);
+      return GetModelDumpArray(dumpPtr, length);
     }
 
     // Dispose pattern from MSDN documentation
