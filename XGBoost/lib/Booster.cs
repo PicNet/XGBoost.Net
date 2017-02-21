@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.InteropServices;
 
-namespace XGBoost
+namespace XGBoost.lib
 {
   public class Booster : IDisposable
   {
@@ -164,7 +164,7 @@ namespace XGBoost
     {
       int length;
       IntPtr dumpPtr;
-      XGBOOST_NATIVE_METHODS.XGBoosterDumpModelEx(handle, fmap,with_stats, format, out length, out dumpPtr);
+      XGBOOST_NATIVE_METHODS.XGBoosterDumpModel(handle, fmap,with_stats, format, out length, out dumpPtr);
       return GetModelDumpArray(dumpPtr, length);
     }
 

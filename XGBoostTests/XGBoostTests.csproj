@@ -54,7 +54,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="SaveLoadAndDumpTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestUtils.cs" />
     <Compile Include="XGBClassifierTests.cs" />
     <Compile Include="XGBRegressorTests.cs" />
   </ItemGroup>

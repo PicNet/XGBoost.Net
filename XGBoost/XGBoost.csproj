@@ -48,16 +48,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Booster.cs" />
-    <Compile Include="DllFailException.cs" />
-    <Compile Include="XGBOOST_NATIVE_METHODS.cs" />
-    <Compile Include="DMatrix.cs" />
+    <Compile Include="BaseXgbModel.cs" />
+    <Compile Include="lib\Booster.cs" />
+    <Compile Include="lib\DllFailException.cs" />
+    <Compile Include="lib\DllLoader.cs" />
+    <Compile Include="lib\XGBOOST_NATIVE_METHODS.cs" />
+    <Compile Include="lib\DMatrix.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XGBClassifier.cs" />
     <Compile Include="XGBRegressor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="lib\libxgboost.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace XGBoost
+namespace XGBoost.lib
 {
   class DllFailException : Exception
   {

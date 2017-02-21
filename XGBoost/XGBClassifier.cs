@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using XGBoost.lib;
 
 namespace XGBoost
 {
-  public class XGBClassifier
+  public class XGBClassifier : BaseXgbModel
   {
-    private readonly IDictionary<string, object> parameters = new Dictionary<string, object>();
-    private Booster booster;
 
     /// <summary>
     ///   Implementation of the Scikit-Learn API for XGBoost
@@ -127,26 +125,27 @@ namespace XGBoost
 
     public static Dictionary<string, object> GetDefaultParameters()
     {
-      var defaultParameters = new Dictionary<string, object>();
-      defaultParameters["max_depth"] = 3;
-      defaultParameters["learning_rate"] = 0.1f;
-      defaultParameters["n_estimators"] = 100;
-      defaultParameters["silent"] = true;
-      defaultParameters["objective"] = "binary:logistic";
-      defaultParameters["nthread"] = -1;
-      defaultParameters["gamma"] = 0;
-      defaultParameters["min_child_weight"] = 1;
-      defaultParameters["max_delta_step"] = 0;
-      defaultParameters["subsample"] = 1;
-      defaultParameters["colsample_bytree"] = 1;
-      defaultParameters["colsample_bylevel"] = 1;
-      defaultParameters["reg_alpha"] = 0;
-      defaultParameters["reg_lambda"] = 1;
-      defaultParameters["scale_pos_weight"] = 1;
-      defaultParameters["base_score"] = 0.5f;
-      defaultParameters["seed"] = 0;
-      defaultParameters["missing"] = float.NaN;
-      defaultParameters["_Booster"] = null;
+      var defaultParameters = new Dictionary<string, object> {
+        ["max_depth"] = 3,
+        ["learning_rate"] = 0.1f,
+        ["n_estimators"] = 100,
+        ["silent"] = true,
+        ["objective"] = "binary:logistic",
+        ["nthread"] = -1,
+        ["gamma"] = 0,
+        ["min_child_weight"] = 1,
+        ["max_delta_step"] = 0,
+        ["subsample"] = 1,
+        ["colsample_bytree"] = 1,
+        ["colsample_bylevel"] = 1,
+        ["reg_alpha"] = 0,
+        ["reg_lambda"] = 1,
+        ["scale_pos_weight"] = 1,
+        ["base_score"] = 0.5f,
+        ["seed"] = 0,
+        ["missing"] = float.NaN,
+        ["_Booster"] = null
+      };
 
       return defaultParameters;
     }
@@ -191,24 +190,7 @@ namespace XGBoost
       var dTest = new DMatrix(data);
       var preds = booster.Predict(dTest);
       return preds.Select(v => new[] { 1 - v, v } ).ToArray();
-    }
-    
-    public void SaveModelToFile(string fileName)
-    {
-        booster.Save(fileName);
-    }
-
-    public void LoadModelFromFile(string fileName)
-    {
-        booster = new Booster(fileName);
-    }
-
-    public string[] DumpModelEx(string fmap = "",
-                                 int with_stats = 0,
-                                 string format = "json")
-    {
-        return booster.DumpModelEx(fmap, with_stats,format);
-    }
+    }        
 
     private Booster Train(IDictionary<string, object> args, DMatrix dTrain, int numBoostRound = 10)
     {

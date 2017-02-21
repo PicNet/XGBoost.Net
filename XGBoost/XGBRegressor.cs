@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
+using XGBoost.lib;
 
 namespace XGBoost
 {
-  public class XGBRegressor
-  {
-    private readonly IDictionary<string, object> parameters = new Dictionary<string, object>();
-    private Booster booster;
-
+  public class XGBRegressor : BaseXgbModel
+  {    
         /// <summary>
         ///   Implementation of the Scikit-Learn API for XGBoost
         /// </summary>
