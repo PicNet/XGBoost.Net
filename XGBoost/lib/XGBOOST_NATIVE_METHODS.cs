@@ -57,10 +57,6 @@ namespace XGBoost.lib
 
     [DllImport(dllLocation)]
     public static extern int XGBoosterDumpModel(IntPtr handle, string fmap,
-                                                  int with_stats, string format,
-                                                  out int out_len, out IntPtr dumpPtr);
-    [DllImport(dllLocation)]
-    public static extern int XGBoosterDumpModel(IntPtr handle, string fmap,
                                                 int with_stats, out int out_len,
                                                 out string[] dumpStr);
   }

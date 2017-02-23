@@ -109,22 +109,6 @@ namespace XGBoost.lib
       }
     }
 
-    public string[] GetModelDumpArray(IntPtr predsPtr, int predsLen)
-    {
-      var length = unchecked((int)predsLen);
-      var preds = new string[length];
-      for (var i = 0; i < length; i++)
-      {
-        var floatBytes = new byte[4];
-        for (var b = 0; b < 4; b++)
-        {
-          floatBytes[b] = Marshal.ReadByte(predsPtr, 4 * i + b);
-        }
-        preds[i] = BitConverter.ToString(floatBytes, 0);
-      }
-      return preds;
-    }
-
     public void PrintParameters(IDictionary<string, Object> parameters)
     {
       Console.WriteLine("max_depth: " + (int)parameters["max_depth"]);
@@ -163,9 +147,9 @@ namespace XGBoost.lib
     public string[] DumpModelEx(string fmap, int with_stats, string format)
     {
       int length;
-      IntPtr dumpPtr;
-      XGBOOST_NATIVE_METHODS.XGBoosterDumpModel(handle, fmap,with_stats, format, out length, out dumpPtr);
-      return GetModelDumpArray(dumpPtr, length);
+      string[] dumpStr;
+      XGBOOST_NATIVE_METHODS.XGBoosterDumpModel(handle, fmap, with_stats, out length, out dumpStr);
+      return dumpStr;
     }
 
     // Dispose pattern from MSDN documentation
