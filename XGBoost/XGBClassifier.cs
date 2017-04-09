@@ -205,7 +205,14 @@ namespace XGBoost
       }
     }
 
-    private Booster Train(IDictionary<string, object> args, DMatrix dTrain, int numBoostRound = 10)
+        public string[] DumpModelEx(string fmap = "",
+                             int with_stats = 0,
+                             string format = "text")
+        {
+            return booster.DumpModelEx(fmap, with_stats, format);
+        }
+
+        private Booster Train(IDictionary<string, object> args, DMatrix dTrain, int numBoostRound = 10)
     {
       var bst = new Booster(args, dTrain);
       for (int i = 0; i < numBoostRound; i++) { bst.Update(dTrain, i); }
