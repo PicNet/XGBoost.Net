@@ -97,10 +97,14 @@ namespace XGBoost.lib
     // Dispose pattern from MSDN documentation
     protected virtual void Dispose(bool disposing)
     {
-      if (disposed)
-        return;
-      XGBOOST_NATIVE_METHODS.XGDMatrixFree(_handle);
-      disposed = true;
+        if (disposed)
+            return;
+
+        int output = XGBOOST_NATIVE_METHODS.XGDMatrixFree(_handle);
+        if (output == -1)
+            throw new DllFailException(XGBOOST_NATIVE_METHODS.XGBGetLastError());
+
+        disposed = true;
     }
   }
 }
