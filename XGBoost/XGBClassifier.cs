@@ -113,14 +113,18 @@ namespace XGBoost
     /// </param>
     public void Fit(float[][] data, float[] labels)
     {
-      var train = new DMatrix(data, labels);
-      booster = Train(parameters, train, ((int)parameters["n_estimators"]));
+        using (var train = new DMatrix(data, labels))
+        {
+            booster = Train(parameters, train, ((int)parameters["n_estimators"]));
+        }
     }
 
     public void Fit(float[][] data, float[] labels, IDictionary<string, object> p_parameters)
     {
-      var train = new DMatrix(data, labels);
-      booster = Train(parameters, train, ((int)parameters["n_estimators"]),p_parameters);
+        using (var train = new DMatrix(data, labels))
+        {
+            booster = Train(parameters, train, ((int)parameters["n_estimators"]), p_parameters);
+        }
     }
 
     public static Dictionary<string, object> GetDefaultParameters()
@@ -166,14 +170,20 @@ namespace XGBoost
     /// </returns>
     public float[] Predict(float[][] data)
     {
-      var test = new DMatrix(data);
-      return booster.Predict(test).Select(v => v > 0.5f ? 1f : 0f).ToArray();
+        using (var test = new DMatrix(data))
+        {
+            var retArray = booster.Predict(test).Select(v => v > 0.5f ? 1f : 0f).ToArray();
+            return retArray;
+        }
     }
 
     public float[] PredictRaw(float[][] data)
     {
-      var test = new DMatrix(data);
-      return booster.Predict(test);
+        using (var test = new DMatrix(data))
+        {
+            var retArray = booster.Predict(test);
+            return retArray;
+        }
     }
     /// <summary>
     ///   Predict using the gradient boosted model
@@ -187,10 +197,13 @@ namespace XGBoost
     /// </returns>
     public float[][] PredictProba(float[][] data)
     {
-      var dTest = new DMatrix(data);
-      var preds = booster.Predict(dTest);
-      return preds.Select(v => new[] { 1 - v, v } ).ToArray();
-    }        
+        using (var dTest = new DMatrix(data))
+        {
+            var preds = booster.Predict(dTest);
+            var retArray = preds.Select(v => new[] { 1 - v, v }).ToArray();
+            return retArray;
+        }
+    }
 
     private Booster Train(IDictionary<string, object> args, DMatrix dTrain, int numBoostRound = 10)
     {

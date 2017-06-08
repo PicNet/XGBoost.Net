@@ -105,8 +105,10 @@ namespace XGBoost
     /// </param>
     public void Fit(float[][] data, float[] labels)
     {
-      var train = new DMatrix(data, labels);
-      booster = Train(parameters, train, (int)parameters["n_estimators"]);
+        using (var train = new DMatrix(data, labels))
+        {
+            booster = Train(parameters, train, (int)parameters["n_estimators"]);
+        }
     }    
 
     /// <summary>
@@ -120,8 +122,10 @@ namespace XGBoost
     /// </returns>
     public float[] Predict(float[][] data)
     {
-      var test = new DMatrix(data);
-      return booster.Predict(test);
+        using (var test = new DMatrix(data))
+        {
+            return booster.Predict(test);
+        } 
     }
 
     private Booster Train(IDictionary<string, object> args, DMatrix train, int numBoostRound = 10)
