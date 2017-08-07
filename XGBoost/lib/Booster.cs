@@ -169,8 +169,8 @@ namespace XGBoost.lib
         return trees;
     }
 
-        // Dispose pattern from MSDN documentation
-        public void Dispose()
+    // Dispose pattern from MSDN documentation
+    public void Dispose()
     {
       Dispose(true);
       GC.SuppressFinalize(this);
