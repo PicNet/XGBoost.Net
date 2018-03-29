@@ -163,11 +163,11 @@ namespace XGBoost.lib
         //iterate through the length of the tree ensemble and pull the strings out from the returned pointer's array of pointers. prepend python's api convention of adding booster[i] to the beginning of the tree
         for (var i = 0; i < length; i++)
         {
-          var ipt1 = Marshal.ReadIntPtr(Marshal.ReadIntPtr(handle2.AddrOfPinnedObject()), intptrSize * i);
-          string s = Marshal.PtrToStringAnsi(ipt1);
-          trees[i] = string.Format("booster[{0}]\n{1}", i, s);
-          var bytesToRead = (s.Length * 2) + IntPtr.Size;
-          readSize += bytesToRead;
+            var ipt1 = Marshal.ReadIntPtr(Marshal.ReadIntPtr(handle2.AddrOfPinnedObject()), intptrSize * i);
+            string s = Marshal.PtrToStringAnsi(ipt1);
+            trees[i] = string.Format("booster[{0}]\n{1}", i, s);
+            var bytesToRead = (s.Length * 2) + IntPtr.Size;
+            readSize += bytesToRead;
         }
         handle2.Free();
         return trees;
