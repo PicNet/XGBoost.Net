@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace XGBoost.lib
 {
@@ -12,6 +10,7 @@ namespace XGBoost.lib
     private bool disposed;
     private readonly IntPtr handle;
     private const int normalPrediction = 0;  // optionMask value for XGBoosterPredict
+    private int numClass = 1;
 
     public IntPtr Handle => handle;
 
@@ -99,6 +98,11 @@ namespace XGBoost.lib
       SetParameter("base_score", ((float)parameters["base_score"]).ToString(nfi));
       SetParameter("seed", ((int)parameters["seed"]).ToString());
       SetParameter("missing", ((float)parameters["missing"]).ToString(nfi));
+      if (parameters.TryGetValue("num_class",out var value))
+      {
+          numClass = (int)value;
+          SetParameter("num_class", numClass.ToString());
+      }
     }
 
     // doesn't support floats with commas (e.g. 0,5F)
@@ -148,25 +152,10 @@ namespace XGBoost.lib
 
     public string[] DumpModelEx(string fmap, int with_stats, string format)
     {
-        int length;
-        IntPtr treePtr;
-        var intptrSize = IntPtr.Size;
-        XGBOOST_NATIVE_METHODS.XGBoosterDumpModel(handle, fmap, with_stats, out length, out treePtr);
-        var trees = new string[length];
-        int readSize = 0;
-        var handle2 = GCHandle.Alloc(treePtr, GCHandleType.Pinned);
-
-        //iterate through the length of the tree ensemble and pull the strings out from the returned pointer's array of pointers. prepend python's api convention of adding booster[i] to the beginning of the tree
-        for (var i = 0; i < length; i++)
-        {
-            var ipt1 = Marshal.ReadIntPtr(Marshal.ReadIntPtr(handle2.AddrOfPinnedObject()), intptrSize * i);
-            string s = Marshal.PtrToStringAnsi(ipt1);
-            trees[i] = string.Format("booster[{0}]\n{1}", i, s);
-            var bytesToRead = (s.Length * 2) + IntPtr.Size;
-            readSize += bytesToRead;
-        }
-        handle2.Free();
-        return trees;
+      int length;
+      string[] dumpStr;
+      XGBOOST_NATIVE_METHODS.XGBoosterDumpModel(handle, fmap, with_stats, out length, out dumpStr);
+      return dumpStr;
     }
 
     // Dispose pattern from MSDN documentation
