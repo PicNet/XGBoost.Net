@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using XGBoost.lib;
 
@@ -66,12 +67,12 @@ namespace XGBoost
     ///   Value in the data which needs to be present as a missing value
     /// </param>
     public XGBClassifier(int maxDepth = 3, float learningRate = 0.1F, int nEstimators = 100,
-                bool silent = true, string objective = "binary:logistic",
-                int nThread = -1, float gamma = 0, int minChildWeight = 1,
-                int maxDeltaStep = 0, float subsample = 1, float colSampleByTree = 1,
-                float colSampleByLevel = 1, float regAlpha = 0, float regLambda = 1,
-                float scalePosWeight = 1, float baseScore = 0.5F, int seed = 0,
-                float missing = float.NaN, float numClass=0)
+          bool silent = true, string objective = "binary:logistic",
+          int nThread = -1, float gamma = 0, int minChildWeight = 1,
+          int maxDeltaStep = 0, float subsample = 1, float colSampleByTree = 1,
+          float colSampleByLevel = 1, float regAlpha = 0, float regLambda = 1,
+          float scalePosWeight = 1, float baseScore = 0.5F, int seed = 0,
+          float missing = float.NaN, int numClass = 0)
     {
       parameters["max_depth"] = maxDepth;
       parameters["learning_rate"] = learningRate;
@@ -94,6 +95,7 @@ namespace XGBoost
       parameters["seed"] = seed;
       parameters["missing"] = missing;
       parameters["_Booster"] = null;
+      parameters["num_class"] = numClass;
     }
 
 
@@ -129,7 +131,8 @@ namespace XGBoost
 
     public static Dictionary<string, object> GetDefaultParameters()
     {
-      var defaultParameters = new Dictionary<string, object> {
+      var defaultParameters = new Dictionary<string, object>
+      {
         ["max_depth"] = 3,
         ["learning_rate"] = 0.1f,
         ["n_estimators"] = 100,
@@ -148,7 +151,8 @@ namespace XGBoost
         ["base_score"] = 0.5f,
         ["seed"] = 0,
         ["missing"] = float.NaN,
-        ["_Booster"] = null
+        ["_Booster"] = null,
+        ["num_class"] = 0
       };
 
       return defaultParameters;
@@ -200,16 +204,31 @@ namespace XGBoost
       using (var dTest = new DMatrix(data))
       {
         var preds = booster.Predict(dTest);
-        var retArray = preds.Select(v => new[] { 1 - v, v }).ToArray();
+        float[][] retArray;
+        var numClass = (int)parameters["num_class"];
+        if (numClass >= 2)
+        {
+          var length = preds.Length / numClass;
+          retArray = new float[length][];
+          for (var i = 0; i < length; i++)
+          {
+            var p = new List<float>();
+            for (var j = 0; j < numClass; j++)
+              p.Add(preds[numClass*i + j]);
+            retArray[i] = p.ToArray();
+          }
+
+          return retArray;
+
+        }
+        retArray = preds.Select(v => new[] { 1 - v, v }).ToArray();
         return retArray;
       }
     }
 
-    public string[] DumpModelEx(string fmap = "",
-                         int with_stats = 0,
-                         string format = "text")
+    public string[] DumpModelEx(string fmap = "", int with_stats = 0, string format = "text")
     {
-        return booster.DumpModelEx(fmap, with_stats, format);
+       return booster.DumpModelEx(fmap, with_stats, format);
     }
 
     private Booster Train(IDictionary<string, object> args, DMatrix dTrain, int numBoostRound = 10)
