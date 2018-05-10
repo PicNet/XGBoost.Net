@@ -21,7 +21,7 @@ namespace XGBoost.lib
     }
 
     public DMatrix(float[][] data, float[] labels = null)
-        :this(Flatten2DArray(data), unchecked((ulong)data.Length), unchecked((ulong)data[0].Length))
+        :this(Flatten2DArray(data), unchecked((ulong)data.Length), unchecked((ulong)data[0].Length), labels)
     {
     }
 
