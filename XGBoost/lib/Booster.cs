@@ -187,7 +187,7 @@ namespace XGBoost.lib
     protected virtual void Dispose(bool disposing)
     {
       if (disposed) return;
-      XGBOOST_NATIVE_METHODS.XGDMatrixFree(handle);
+      XGBOOST_NATIVE_METHODS.XGBoosterFree(handle);
       disposed = true;
     }
   }
