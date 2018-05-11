@@ -76,6 +76,8 @@ namespace XGBoost
       parameters["n_estimators"] = nEstimators;
       parameters["silent"] = silent;
       parameters["objective"] = objective;
+      parameters["booster"] = "gbtree";
+      parameters["tree_method"] = "auto";
 
       parameters["nthread"] = nThread;
       parameters["gamma"] = gamma;

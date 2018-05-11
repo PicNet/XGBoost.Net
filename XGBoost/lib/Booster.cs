@@ -83,7 +83,9 @@ namespace XGBoost.lib
       SetParameter("n_estimators", ((int)parameters["n_estimators"]).ToString());
       SetParameter("silent", ((bool)parameters["silent"]).ToString());
       SetParameter("objective", (string)parameters["objective"]);
-        
+      SetParameter("booster", (string)parameters["booster"]);
+      SetParameter("tree_method", (string)parameters["tree_method"]);
+
       SetParameter("nthread", ((int)parameters["nthread"]).ToString());
       SetParameter("gamma", ((float)parameters["gamma"]).ToString(nfi));
       SetParameter("min_child_weight", ((int)parameters["min_child_weight"]).ToString());
@@ -98,6 +100,8 @@ namespace XGBoost.lib
       SetParameter("base_score", ((float)parameters["base_score"]).ToString(nfi));
       SetParameter("seed", ((int)parameters["seed"]).ToString());
       SetParameter("missing", ((float)parameters["missing"]).ToString(nfi));
+      
+      
       if (parameters.TryGetValue("num_class",out var value))
       {
           numClass = (int)value;
