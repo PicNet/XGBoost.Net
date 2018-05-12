@@ -21,21 +21,23 @@ namespace XGBoost.lib
     }
 
     public DMatrix(float[][] data, float[] labels = null)
+        :this(Flatten2DArray(data), unchecked((ulong)data.Length), unchecked((ulong)data[0].Length), labels)
     {
-      float[] data1D = Flatten2DArray(data);
-      ulong nrows = unchecked((ulong)data.Length);
-      ulong ncols = unchecked((ulong)data[0].Length);
-      int output = XGBOOST_NATIVE_METHODS.XGDMatrixCreateFromMat(data1D, nrows, ncols, Missing, out _handle);
-      if (output == -1) 
-        throw new DllFailException(XGBOOST_NATIVE_METHODS.XGBGetLastError());
-
-      if (labels != null)
-      {
-        Label = labels;
-      }
     }
 
-    private float[] Flatten2DArray(float[][] data2D)
+    public DMatrix(float[] data1D, ulong nrows, ulong ncols, float[] labels = null)
+    {
+        int output = XGBOOST_NATIVE_METHODS.XGDMatrixCreateFromMat(data1D, nrows, ncols, Missing, out _handle);
+        if (output == -1)
+            throw new DllFailException(XGBOOST_NATIVE_METHODS.XGBGetLastError());
+
+        if (labels != null)
+        {
+            Label = labels;
+        }
+    }
+
+    private static float[] Flatten2DArray(float[][] data2D)
     {
       int elementsNo = 0;
       for (int row = 0; row < data2D.Length; row++)
