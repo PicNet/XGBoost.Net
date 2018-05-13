@@ -163,6 +163,7 @@ namespace XGBoost
         ["rate_drop"] = 0.0f,
         ["one_drop"] = 0,
         ["skip_drop"] = 0f,
+        ["updater"] = "grow_colmaker,prune",
         ["base_score"] = 0.5f,
         ["seed"] = 0,
         ["missing"] = float.NaN,

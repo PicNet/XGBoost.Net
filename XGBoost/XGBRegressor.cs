@@ -95,6 +95,7 @@ namespace XGBoost
       parameters["rate_drop"] = 0f;
       parameters["one_drop"] = 0;
       parameters["skip_drop"] = 0f;
+      parameters["updater"] = "grow_colmaker,prune";
 
       parameters["base_score"] = baseScore;
       parameters["seed"] = seed;
