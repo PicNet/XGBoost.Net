@@ -101,6 +101,7 @@ namespace XGBoost.lib
       SetParameter("seed", ((int)parameters["seed"]).ToString());
       SetParameter("missing", ((float)parameters["missing"]).ToString(nfi));
       
+      SetParameter("rate_drop", ((float)parameters["rate_drop"]).ToString(nfi));
       
       if (parameters.TryGetValue("num_class",out var value))
       {

@@ -90,6 +90,8 @@ namespace XGBoost
       parameters["reg_lambda"] = regLambda;
       parameters["scale_pos_weight"] = scalePosWeight;
 
+      parameters["rate_drop"] = 0.0;
+
       parameters["base_score"] = baseScore;
       parameters["seed"] = seed;
       parameters["missing"] = missing;
