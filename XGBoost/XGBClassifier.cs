@@ -93,6 +93,7 @@ namespace XGBoost
       parameters["reg_lambda"] = regLambda;
       parameters["scale_pos_weight"] = scalePosWeight;
 
+      parameters["sample_type"] = "uniform";
       parameters["rate_drop"] = 0.0;
 
       parameters["base_score"] = baseScore;
@@ -154,6 +155,8 @@ namespace XGBoost
         ["reg_alpha"] = 0,
         ["reg_lambda"] = 1,
         ["scale_pos_weight"] = 1,
+        ["sample_type"] = "uniform",
+        ["rate_drop"] = 0.0,
         ["base_score"] = 0.5f,
         ["seed"] = 0,
         ["missing"] = float.NaN,
