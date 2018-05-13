@@ -92,8 +92,9 @@ namespace XGBoost
 
       parameters["sample_type"] = "uniform";
       parameters["normalize_type"] = "tree";
-      parameters["rate_drop"] = 0.0;
+      parameters["rate_drop"] = 0f;
       parameters["one_drop"] = 0;
+      parameters["skip_drop"] = 0f;
 
       parameters["base_score"] = baseScore;
       parameters["seed"] = seed;

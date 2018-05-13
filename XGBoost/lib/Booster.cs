@@ -105,6 +105,7 @@ namespace XGBoost.lib
       SetParameter("normalize_type ", (string)parameters["normalize_type"]);
       SetParameter("rate_drop", ((float)parameters["rate_drop"]).ToString(nfi));
       SetParameter("one_drop", ((int)parameters["one_drop"]).ToString());
+      SetParameter("skip_drop", ((float)parameters["skip_drop"]).ToString(nfi));
 
       if (parameters.TryGetValue("num_class",out var value))
       {
@@ -152,6 +153,7 @@ namespace XGBoost.lib
       Console.WriteLine("normalize_type: " + ((float)parameters["normalize_type"]));
       Console.WriteLine("rate_drop: ", + ((float)parameters["rate_drop"]));
       Console.WriteLine("one_drop: ", +((int)parameters["one_drop"]));
+      Console.WriteLine("skip_drop: ", +((float)parameters["skip_drop"]));
     }
 
     public void SetParameter(string name, string val)
