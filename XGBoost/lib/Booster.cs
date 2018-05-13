@@ -106,6 +106,7 @@ namespace XGBoost.lib
       SetParameter("rate_drop", ((float)parameters["rate_drop"]).ToString(nfi));
       SetParameter("one_drop", ((int)parameters["one_drop"]).ToString());
       SetParameter("skip_drop", ((float)parameters["skip_drop"]).ToString(nfi));
+      SetParameter("updater", ((string)parameters["updater"]));
 
       if (parameters.TryGetValue("num_class",out var value))
       {
