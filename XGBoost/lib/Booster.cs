@@ -101,7 +101,8 @@ namespace XGBoost.lib
       SetParameter("seed", ((int)parameters["seed"]).ToString());
       SetParameter("missing", ((float)parameters["missing"]).ToString(nfi));
       
-      SetParameter("sample_type", (string)parameters["sample_type"]);  
+      SetParameter("sample_type", (string)parameters["sample_type"]);
+      SetParameter("normalize_type ", (string)parameters["normalize_type"]);
       SetParameter("rate_drop", ((float)parameters["rate_drop"]).ToString(nfi));
 
       if (parameters.TryGetValue("num_class",out var value))
@@ -147,8 +148,8 @@ namespace XGBoost.lib
       Console.WriteLine("missing: " + (float)parameters["missing"]);
 
       Console.WriteLine("sample_type: " + ((float)parameters["sample_type"]));
+      Console.WriteLine("normalize_type: " + ((float)parameters["normalize_type"]));
       Console.WriteLine("rate_drop: ", + ((float)parameters["rate_drop"]));
-
     }
 
     public void SetParameter(string name, string val)

@@ -91,6 +91,7 @@ namespace XGBoost
       parameters["scale_pos_weight"] = scalePosWeight;
 
       parameters["sample_type"] = "uniform";
+      parameters["normalize_type"] = "tree";
       parameters["rate_drop"] = 0.0;
 
       parameters["base_score"] = baseScore;
