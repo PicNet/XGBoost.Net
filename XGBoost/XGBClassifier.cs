@@ -96,6 +96,7 @@ namespace XGBoost
       parameters["sample_type"] = "uniform";
       parameters["normalize_type"] = "tree";
       parameters["rate_drop"] = 0.0;
+      parameters["one_drop"] = 0;
 
       parameters["base_score"] = baseScore;
       parameters["seed"] = seed;
@@ -159,6 +160,7 @@ namespace XGBoost
         ["sample_type"] = "uniform",
         ["normalize_type"] = "tree",
         ["rate_drop"] = 0.0,
+        ["one_drop"] = 0,
         ["base_score"] = 0.5f,
         ["seed"] = 0,
         ["missing"] = float.NaN,
