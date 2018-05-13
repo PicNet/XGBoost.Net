@@ -140,6 +140,8 @@ namespace XGBoost
         ["n_estimators"] = 100,
         ["silent"] = true,
         ["objective"] = "binary:logistic",
+        ["booster"] = "gbtree",
+        ["tree_method"] = "auto",
         ["nthread"] = -1,
         ["gamma"] = 0,
         ["min_child_weight"] = 1,
