@@ -98,7 +98,6 @@ namespace XGBoost
       parameters["rate_drop"] = 0f;
       parameters["one_drop"] = 0;
       parameters["skip_drop"] = 0f;
-      parameters["updater"] = "shotgun";
 
       parameters["base_score"] = baseScore;
       parameters["seed"] = seed;
@@ -164,7 +163,6 @@ namespace XGBoost
         ["rate_drop"] = 0.0f,
         ["one_drop"] = 0,
         ["skip_drop"] = 0f,
-        ["updater"] = "shotgun",
         ["base_score"] = 0.5f,
         ["seed"] = 0,
         ["missing"] = float.NaN,
