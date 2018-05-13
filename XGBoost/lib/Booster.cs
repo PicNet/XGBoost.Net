@@ -101,7 +101,12 @@ namespace XGBoost.lib
       SetParameter("seed", ((int)parameters["seed"]).ToString());
       SetParameter("missing", ((float)parameters["missing"]).ToString(nfi));
       
-      
+      SetParameter("sample_type", (string)parameters["sample_type"]);
+      SetParameter("normalize_type ", (string)parameters["normalize_type"]);
+      SetParameter("rate_drop", ((float)parameters["rate_drop"]).ToString(nfi));
+      SetParameter("one_drop", ((int)parameters["one_drop"]).ToString());
+      SetParameter("skip_drop", ((float)parameters["skip_drop"]).ToString(nfi));
+
       if (parameters.TryGetValue("num_class",out var value))
       {
           numClass = (int)value;
@@ -126,6 +131,8 @@ namespace XGBoost.lib
       Console.WriteLine("n_estimators: " + (int)parameters["n_estimators"]);
       Console.WriteLine("silent: " + (bool)parameters["silent"]);
       Console.WriteLine("objective: " + (string)parameters["objective"]);
+      Console.WriteLine("booster: " + (string)parameters["booster"]);
+      Console.WriteLine("tree_method: " + (string)parameters["tree_method"]);
 
       Console.WriteLine("nthread: " + (int)parameters["nthread"]);
       Console.WriteLine("gamma: " + (float)parameters["gamma"]);
@@ -141,6 +148,12 @@ namespace XGBoost.lib
       Console.WriteLine("base_score: " + (float)parameters["base_score"]);
       Console.WriteLine("seed: " + (int)parameters["seed"]);
       Console.WriteLine("missing: " + (float)parameters["missing"]);
+
+      Console.WriteLine("sample_type: " + ((float)parameters["sample_type"]));
+      Console.WriteLine("normalize_type: " + ((float)parameters["normalize_type"]));
+      Console.WriteLine("rate_drop: ", + ((float)parameters["rate_drop"]));
+      Console.WriteLine("one_drop: ", +((int)parameters["one_drop"]));
+      Console.WriteLine("skip_drop: ", +((float)parameters["skip_drop"]));
     }
 
     public void SetParameter(string name, string val)

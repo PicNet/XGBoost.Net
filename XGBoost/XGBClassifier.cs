@@ -93,6 +93,12 @@ namespace XGBoost
       parameters["reg_lambda"] = regLambda;
       parameters["scale_pos_weight"] = scalePosWeight;
 
+      parameters["sample_type"] = "uniform";
+      parameters["normalize_type"] = "tree";
+      parameters["rate_drop"] = 0f;
+      parameters["one_drop"] = 0;
+      parameters["skip_drop"] = 0f;
+
       parameters["base_score"] = baseScore;
       parameters["seed"] = seed;
       parameters["missing"] = missing;
@@ -140,6 +146,8 @@ namespace XGBoost
         ["n_estimators"] = 100,
         ["silent"] = true,
         ["objective"] = "binary:logistic",
+        ["booster"] = "gbtree",
+        ["tree_method"] = "auto",
         ["nthread"] = -1,
         ["gamma"] = 0,
         ["min_child_weight"] = 1,
@@ -150,6 +158,11 @@ namespace XGBoost
         ["reg_alpha"] = 0,
         ["reg_lambda"] = 1,
         ["scale_pos_weight"] = 1,
+        ["sample_type"] = "uniform",
+        ["normalize_type"] = "tree",
+        ["rate_drop"] = 0.0f,
+        ["one_drop"] = 0,
+        ["skip_drop"] = 0f,
         ["base_score"] = 0.5f,
         ["seed"] = 0,
         ["missing"] = float.NaN,
