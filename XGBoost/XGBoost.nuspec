@@ -2,21 +2,20 @@
 <package >
   <metadata>
     <id>PicNet.XGBoost</id>
-    <version>0.1.1</version>
+    <version>0.2.1</version>
     <title>XGBoost.Net</title>
-    <authors>Adam Dobrzycki</authors>
+    <authors>Guido Tapia, Adam Dobrzycki</authors>
     <owners>Guido Tapia, Adam Dobrzycki</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>https://github.com/PicNet/XGBoost.Net</projectUrl>
     <iconUrl>http://www.picnet.com.au/wp-content/uploads/2015/01/logo-dark.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>.Net wrapper for the XGBoost machine learning library. Targeted for x64 and supports .Net Framework versions 4.0 and above.</description>
-    <releaseNotes>Can save XGBClassifier models as files and load them</releaseNotes>
-    <copyright>Copyright 2016</copyright>
+    <releaseNotes>Include minor and major fixes</releaseNotes>
+    <copyright>Copyright 2018</copyright>
     <tags>machine learning xgboost boosted tree</tags>
   </metadata>
   <files>
-    <file src="bin/Debug/XGBoost.dll" target="lib" />
-    <file src="lib/libxgboost.dll" target="lib" />
+    <file src="lib/XGBoost.dll" target="lib" />
   </files>
 </package>
