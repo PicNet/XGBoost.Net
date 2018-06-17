@@ -102,6 +102,11 @@ namespace XGBoost
       parameters["_Booster"] = null;
     }
 
+
+    public XGBRegressor(IDictionary<string, object> p_parameters)
+    {
+      parameters = p_parameters;
+    }
     /// <summary>
     ///   Fit the gradient boosting model
     /// </summary>
@@ -117,17 +122,57 @@ namespace XGBoost
       {
         booster = Train(parameters, train, (int)parameters["n_estimators"]);
       }
-    }    
+    }
 
-    /// <summary>
-    ///   Predict using the gradient boosted model
-    /// </summary>
-    /// <param name="data">
-    ///   Feature matrix to do predicitons on
-    /// </param>
-    /// <returns>
-    ///   Predictions
-    /// </returns>
+    public static Dictionary<string, object> GetDefaultParameters()
+    {
+        var defaultParameters = new Dictionary<string, object>
+        {
+            ["max_depth"] = 3,
+            ["learning_rate"] = 0.1f,
+            ["n_estimators"] = 100,
+            ["silent"] = true,
+            ["objective"] = "reg:linear",
+            ["booster"] = "gbtree",
+            ["tree_method"] = "auto",
+            ["nthread"] = -1,
+            ["gamma"] = 0,
+            ["min_child_weight"] = 1,
+            ["max_delta_step"] = 0,
+            ["subsample"] = 1,
+            ["colsample_bytree"] = 1,
+            ["colsample_bylevel"] = 1,
+            ["reg_alpha"] = 0,
+            ["reg_lambda"] = 1,
+            ["scale_pos_weight"] = 1,
+            ["sample_type"] = "uniform",
+            ["normalize_type"] = "tree",
+            ["rate_drop"] = 0.0f,
+            ["one_drop"] = 0,
+            ["skip_drop"] = 0f,
+            ["base_score"] = 0.5f,
+            ["seed"] = 0,
+            ["missing"] = float.NaN,
+            ["_Booster"] = null,
+        };
+
+        return defaultParameters;
+    }
+
+    public void SetParameter(string parameterName, object parameterValue)
+    {
+        parameters[parameterName] = parameterValue;
+    }
+
+        /// <summary>
+        ///   Predict using the gradient boosted model
+        /// </summary>
+        /// <param name="data">
+        ///   Feature matrix to do predicitons on
+        /// </param>
+        /// <returns>
+        ///   Predictions
+        /// </returns>
     public float[] Predict(float[][] data)
     {
       using (var test = new DMatrix(data))
