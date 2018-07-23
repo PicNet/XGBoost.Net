@@ -72,7 +72,7 @@ namespace XGBoost
           int maxDeltaStep = 0, float subsample = 1, float colSampleByTree = 1,
           float colSampleByLevel = 1, float regAlpha = 0, float regLambda = 1,
           float scalePosWeight = 1, float baseScore = 0.5F, int seed = 0,
-          float missing = float.NaN, int numClass = 0)
+          float missing = float.NaN, int numClass = 1)
     {
       parameters["max_depth"] = maxDepth;
       parameters["learning_rate"] = learningRate;
