@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>PicNet.XGBoost</id>
-    <version>0.2.1</version>
+    <version>0.2.2</version>
     <title>XGBoost.Net</title>
     <authors>Guido Tapia, Adam Dobrzycki</authors>
     <owners>Guido Tapia, Adam Dobrzycki</owners>
@@ -16,6 +16,6 @@
     <tags>machine learning xgboost boosted tree</tags>
   </metadata>
   <files>
-    <file src="lib/XGBoost.dll" target="lib" />
+    <file src="lib/libxgboost.dll" target="lib" />
   </files>
 </package>
