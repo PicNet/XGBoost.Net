@@ -7,6 +7,8 @@
     <Authors>Guido Tapia, Adam Dobrzycki</Authors>
     <Company></Company>
     <Description>.Net wrapper for the XGBoost machine learning library. Targeted for x64 and .NET Framework 4 and above, and .NET Standard 2.0 and above.</Description>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/PicNet/XGBoost.Net</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
