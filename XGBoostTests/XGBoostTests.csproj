@@ -16,6 +16,7 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,11 +65,8 @@
     <Content Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\XGBoost\XGBoost.csproj">
-      <Project>{9d9700fa-c60e-465f-853e-d8cda3e015c0}</Project>
+      <Project>{cbcf6d19-3f11-4d79-864c-dd2651fb91fc}</Project>
       <Name>XGBoost</Name>
     </ProjectReference>
   </ItemGroup>
