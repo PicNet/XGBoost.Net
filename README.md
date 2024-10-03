@@ -1,6 +1,9 @@
 # Note: This package is no longer mantained
 
 # XGBoost.Net
+
+## Note: This package is no longer supported.  A live fork can be found [here](https://github.com/mdabros/XGBoostSharp) (Thanks to Mads Dabros)
+
 .Net wrapper for [XGBoost](https://github.com/dmlc/xgboost) based off the [Python API](https://xgboost.readthedocs.io/en/latest/python/index.html).
 
 Available as a [NuGet package](https://www.nuget.org/packages/PicNet.XGBoost/).
